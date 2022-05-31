@@ -70,7 +70,7 @@ public class AuthorizantionServerConfig extends AuthorizationServerConfigurerAda
 		.secret(b.encode("1234"))
 		.scopes("read", "write")
 		.authorizedGrantTypes("password")
-		.accessTokenValiditySeconds(9600);
+		.accessTokenValiditySeconds(86300);
 	}
 
 }

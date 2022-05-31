@@ -8,30 +8,27 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-	
+
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-	
+
 		http.authorizeRequests()
-		 						.antMatchers("/").permitAll()
-		 						.antMatchers("/api_react/**").permitAll()
-				                .antMatchers("/Lote/**").permitAll()
-								.antMatchers("/oauth/**").permitAll()
-								.antMatchers("/teste/**").permitAll()
-								
-								.antMatchers("/api/nota/**").authenticated()
-								.antMatchers("/api/lote/**").authenticated()
-								.antMatchers("/api/produto/**").authenticated()
-								.antMatchers("/api/unidademedida/**").authenticated()
-								.antMatchers("/api/filial/**").authenticated()
-								.antMatchers("/api/conferenciamanual/**").authenticated()
-								.antMatchers("/api/entidade/**").authenticated()
-								.antMatchers("/api/formacaoprecoproduto/**").authenticated()
-								
-							
-								.anyRequest().denyAll();
+		        .antMatchers("/**").permitAll()
+		        .antMatchers("/Lote/**").permitAll()
+				.antMatchers("/oauth/**").permitAll()
+				.antMatchers("/teste/**").permitAll()
+
+				.antMatchers("/api_vga/**").authenticated()
+
+				.antMatchers("/api_precificacao/**").authenticated().antMatchers("/api_react/**").authenticated()
+
+				.antMatchers("/api/nota/**").authenticated().antMatchers("/api/lote/**").authenticated()
+				.antMatchers("/api/produto/**").authenticated().antMatchers("/api/unidademedida/**").authenticated()
+				.antMatchers("/api/filial/**").authenticated().antMatchers("/api/conferenciamanual/**").authenticated()
+				.antMatchers("/api/entidade/**").authenticated().antMatchers("/api/formacaoprecoproduto/**")
+				.authenticated()
+
+				.anyRequest().denyAll();
 	}
-	
-	
 
 }

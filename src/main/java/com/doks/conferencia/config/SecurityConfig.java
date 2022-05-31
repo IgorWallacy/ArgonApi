@@ -19,45 +19,39 @@ import com.doks.conferencia.service.UsuarioService;
 @EnableResourceServer
 @EnableAuthorizationServer
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	
+
 	@Autowired
 	private UsuarioService service;
-	
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		
-		
-		
-		
+
 		auth
-			.userDetailsService(service)
-			.passwordEncoder(passwordEncoder());
-		
+				.userDetailsService(service)
+				.passwordEncoder(passwordEncoder());
+
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager () throws Exception {
-	
+	public AuthenticationManager authenticationManager() throws Exception {
+
 		return super.authenticationManager();
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		http.
-			csrf().disable()
-			.cors()
-		.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-			
+
+		http.csrf().disable()
+				.cors()
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 	}
-	
+
 	@Bean
-	public PasswordEncoder passwordEncoder () {
-		
-		return  new BCryptPasswordEncoder();
+	public PasswordEncoder passwordEncoder() {
+
+		return new BCryptPasswordEncoder();
 	}
 
 }

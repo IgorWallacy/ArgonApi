@@ -1,22 +1,30 @@
 package com.doks.conferencia.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "familiaproduto")
 @Entity
-public class Familia {
+@Table(name="notafiscalitem")
+public class NotaFiscalItem {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	private String codigo;
 	
-	private String nome;
+	@Column(name="doks_preco_agendado")
+	private BigDecimal precoAgendado;
+	
+	@Column(name="doks_data_agendada")
+	private LocalDate dataAgendada;
 
 	public Integer getId() {
 		return id;
@@ -26,20 +34,20 @@ public class Familia {
 		this.id = id;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public BigDecimal getPrecoAgendado() {
+		return precoAgendado;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setPrecoAgendado(BigDecimal precoAgendado) {
+		this.precoAgendado = precoAgendado;
 	}
 
-	public String getNome() {
-		return nome;
+	public LocalDate getDataAgendada() {
+		return dataAgendada;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDataAgendada(LocalDate dataAgendada) {
+		this.dataAgendada = dataAgendada;
 	}
 
 	@Override
@@ -58,7 +66,7 @@ public class Familia {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Familia other = (Familia) obj;
+		NotaFiscalItem other = (NotaFiscalItem) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -66,7 +74,8 @@ public class Familia {
 			return false;
 		return true;
 	}
-	
-	
 
+	
+	
+	
 }

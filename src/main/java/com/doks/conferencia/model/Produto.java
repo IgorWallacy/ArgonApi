@@ -35,14 +35,9 @@ public class Produto {
 	@JoinColumn(name = "idunidademedida", nullable = false)
 	private UnidadeMedida idUnidadeMedida;
 	
-	@ManyToOne
-	@JoinColumn(name = "idhierarquia", nullable = true)
 	
-	private Hierarquia hierarquia;
 	
-	@ManyToOne
-	@JoinColumn(name = "idfamilia", nullable = true)
-	private Familia idFamilia;
+	
 	
 	
 	
@@ -56,6 +51,8 @@ public class Produto {
 	
 
 
+
+	
 
 	
 
@@ -136,26 +133,13 @@ public class Produto {
 		this.inativo = inativo;
 	}
 
-	public Hierarquia getHierarquia() {
-		return hierarquia;
-	}
 
-	public void setHierarquia(Hierarquia hierarquia) {
-		this.hierarquia = hierarquia;
-	}
 
 	public byte[] getImagem() {
 		return imagem;
 	}
 
-	public Familia getIdFamilia() {
-		return idFamilia;
-	}
 
-	public void setIdFamilia(Familia idFamilia) {
-		this.idFamilia = idFamilia;
-	}
-	
 	
 
 	
