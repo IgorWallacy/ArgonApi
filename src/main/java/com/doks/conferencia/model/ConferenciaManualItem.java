@@ -29,9 +29,12 @@ public class ConferenciaManualItem {
 	private ConferenciaManual conferenciaManual;
 	
 	@ManyToOne
-	@JoinColumn(name = "idproduto", nullable = false)
+	@JoinColumn(name = "idproduto", nullable = true)
 	@NotNull
 	private Produto produto;
+	
+	@Column(name="produto_sem_cadastro")
+	private String produtoSemCadastro;
 	
 	@NotNull
 	private BigDecimal quantidade;
@@ -132,8 +135,16 @@ public class ConferenciaManualItem {
 	}
 	
 	
-
+   
 	
+
+	public String getProdutoSemCadastro() {
+		return produtoSemCadastro;
+	}
+
+	public void setProdutoSemCadastro(String produtoSemCadastro) {
+		this.produtoSemCadastro = produtoSemCadastro;
+	}
 
 	public BigDecimal getQuantidadeSaida() {
 		return quantidadeSaida;

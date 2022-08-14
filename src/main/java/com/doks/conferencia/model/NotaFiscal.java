@@ -42,6 +42,9 @@ public class NotaFiscal {
 	
 	@Column(name="conferencia")
 	private int conferencia;
+	
+	@Column(name="doks_precificado")
+	private boolean precificado;
 
 	public int getId() {
 		return id;
@@ -94,6 +97,14 @@ public class NotaFiscal {
 	
 	
 	
+	public boolean isPrecificado() {
+		return precificado;
+	}
+
+	public void setPrecificado(boolean precificado) {
+		this.precificado = precificado;
+	}
+
 	public LocalDate getEmissao() {
 		return emissao;
 	}

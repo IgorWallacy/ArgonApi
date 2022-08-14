@@ -25,6 +25,9 @@ public class NotaFiscalItem {
 	
 	@Column(name="doks_data_agendada")
 	private LocalDate dataAgendada;
+	
+	@Column(name="doks_usuario_nome_agendado")
+	private String usuarioAgendado;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +51,16 @@ public class NotaFiscalItem {
 
 	public void setDataAgendada(LocalDate dataAgendada) {
 		this.dataAgendada = dataAgendada;
+	}
+	
+	
+
+	public String getUsuarioAgendado() {
+		return usuarioAgendado;
+	}
+
+	public void setUsuarioAgendado(String usuarioAgendado) {
+		this.usuarioAgendado = usuarioAgendado;
 	}
 
 	@Override

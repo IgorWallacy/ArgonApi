@@ -57,8 +57,17 @@ public class PrecificacaoItem {
 	@Column(name="precounitario")
 	private BigDecimal precounitario;
 	
+	@Column(name="precopromocional")
+	private BigDecimal precopromocional;
+	
+	@Column(name="precopromocionalfamilia")
+	private BigDecimal precopromocionalfamilia;
+	
 	@Column(name="percentualmarkup")
 	private BigDecimal percentualmarkup;
+	
+	@Column(name="percentualmarkdown")
+	private BigDecimal percentualmarkdown;
 	
 	@Column(name="precocusto")
 	private BigDecimal precocusto;
@@ -73,8 +82,22 @@ public class PrecificacaoItem {
 	private LocalDate dataagendada;
 
 	
+	@Column(name="usuarioAgendado")
+	private String usuarioAgendado;
+	
+	@Column(name="doks_precificado")
+	private Boolean precificado;
 	
 	
+	
+	public Boolean getPrecificado() {
+		return precificado;
+	}
+
+	public void setPrecificado(Boolean precificado) {
+		this.precificado = precificado;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -132,8 +155,26 @@ public class PrecificacaoItem {
 	}
 	
 	
+	
+	
    
 	
+
+	public BigDecimal getPrecopromocionalfamilia() {
+		return precopromocionalfamilia;
+	}
+
+	public void setPrecopromocionalfamilia(BigDecimal precopromocionalfamilia) {
+		this.precopromocionalfamilia = precopromocionalfamilia;
+	}
+
+	public BigDecimal getPrecopromocional() {
+		return precopromocional;
+	}
+
+	public void setPrecopromocional(BigDecimal precopromocional) {
+		this.precopromocional = precopromocional;
+	}
 
 	public Integer getIdnotafiscal() {
 		return idnotafiscal;
@@ -234,6 +275,24 @@ public class PrecificacaoItem {
 
 	public void setEntradasaida(LocalDateTime entradasaida) {
 		this.entradasaida = entradasaida;
+	}
+	
+	
+
+	public BigDecimal getPercentualmarkdown() {
+		return percentualmarkdown;
+	}
+
+	public void setPercentualmarkdown(BigDecimal percentualmarkdown) {
+		this.percentualmarkdown = percentualmarkdown;
+	}
+
+	public String getUsuarioAgendado() {
+		return usuarioAgendado;
+	}
+
+	public void setUsuarioAgendado(String usuarioAgendado) {
+		this.usuarioAgendado = usuarioAgendado;
 	}
 
 	@Override

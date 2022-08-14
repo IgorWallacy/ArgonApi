@@ -70,8 +70,28 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value="update notafiscalitem set doks_preco_agendado = ?2, doks_data_agendada = ?3 where notafiscalitem.idproduto = ?1 and idnotafiscal = ?4" ,nativeQuery = true)
-	void updateDataAgendadaItemNota (Integer id , BigDecimal preco, LocalDate dataagendada, Integer notafiscalId);
+	@Query(value="update notafiscalitem set doks_preco_agendado = ?2, doks_data_agendada = ?3, doks_usuario_nome_agendado=?5 where notafiscalitem.idproduto = ?1 and idnotafiscal = ?4" ,nativeQuery = true)
+	void updateDataAgendadaItemNota (Integer id , BigDecimal preco, LocalDate dataagendada, Integer notafiscalId, String nomeUsuario);
+	
+	@Modifying(clearAutomatically = true)
+	@Query(value="update notafiscalitem set doks_preco_agendado = ?1 , doks_data_agendada =?2, doks_usuario_nome_agendado=?5 from produto where notafiscalitem.idproduto = produto.id and produto.idfamilia = ?3 and idnotafiscal = ?4" ,nativeQuery = true)
+	void updateDataAgendadaItemNotaFamilia (BigDecimal preco, LocalDate dataagendada,Integer idfamilia, Integer notafiscalId, String nomeUsuario);
+	
+	@Modifying(clearAutomatically = true)
+	@Query(value="update produto set percentualmarkupminimo = ?2 where produto.id = ?1 " ,nativeQuery = true)
+	void atualizarMarkupMinimo(Integer idproduto, BigDecimal percentual);
+
+	@Modifying(clearAutomatically = true)
+	@Query(value="update produto set percentualmarkupminimo = ?2 where produto.idfamilia = ?1 " ,nativeQuery = true)
+	void atualizarMarkupMinimoFamilia(Integer idfamilia, BigDecimal percentual);
+
+	@Modifying(clearAutomatically = true)
+	@Query(value="update produto set lucrobrutominimo = ?2 where produto.id = ?1 " ,nativeQuery = true)
+	void atualizarMarkDownMinimo(Integer idproduto, BigDecimal percentual);
+
+	@Modifying(clearAutomatically = true)
+	@Query(value="update produto set lucrobrutominimo = ?2 where produto.idfamilia = ?1 " ,nativeQuery = true)
+	void atualizarMarkDownMinimoFamilia(Integer idfamilia, BigDecimal percentual);
 	
  
 }

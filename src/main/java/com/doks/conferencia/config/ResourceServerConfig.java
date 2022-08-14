@@ -14,11 +14,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 		http.authorizeRequests()
 		        .antMatchers("/**").permitAll()
+		        .antMatchers("/actuator/**").permitAll()
 		        .antMatchers("/Lote/**").permitAll()
 				.antMatchers("/oauth/**").permitAll()
 				.antMatchers("/teste/**").permitAll()
+				.antMatchers("/api_bi/**").permitAll()
 
 				.antMatchers("/api_vga/**").authenticated()
+				.antMatchers("/api/pedido/**").authenticated()
 
 				.antMatchers("/api_precificacao/**").authenticated().antMatchers("/api_react/**").authenticated()
 

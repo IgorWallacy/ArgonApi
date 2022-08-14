@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.doks.conferencia.model.Filial;
 import com.doks.conferencia.model.PrecificacaoItem;
 import com.doks.conferencia.repository.FilialRepository;
+import com.doks.conferencia.repository.NotaFiscalRepository;
 import com.doks.conferencia.repository.PrecificacaoRepository;
 import com.doks.conferencia.repository.Produtos;
 
@@ -30,6 +31,9 @@ public class PrecificacaoResource {
 
 	@Autowired
 	private Produtos produtosRpository;
+	
+	@Autowired
+	private NotaFiscalRepository notaFiscalRepository;
 
 	@Autowired
 	private FilialRepository filialRepository;
@@ -37,6 +41,9 @@ public class PrecificacaoResource {
 	private List<PrecificacaoItem> todos = new ArrayList<>();
 
 	private List<Filial> filiais = new ArrayList<>();
+	
+	
+	
 
 	/*****************************************************************************
 	 * ATUALIZACAO DE PREÇOS
@@ -49,8 +56,6 @@ public class PrecificacaoResource {
 
 		LocalDateTime data1 = LocalDateTime.parse(dataI);
 		LocalDateTime data2 = LocalDateTime.parse(dataF);
-		
-	
 
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
@@ -154,24 +159,24 @@ public class PrecificacaoResource {
 	}
 
 	/* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO --- TEMPORARIO */
-	@PutMapping("/produtos/precificar/agenda/{idproduto}/{idfamilia}/{idNota}/{preco}/{dataagendada_string}")
+	@PutMapping("/produtos/precificar/agenda/{idproduto}/{idfamilia}/{idNota}/{preco}/{dataagendada_string}/{nomeUsuario}")
 	@Transactional
 	public void atualizarPrecoAgendadoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
-			@PathVariable String preco,
-			@PathVariable String dataagendada_string, @PathVariable Integer idNota) {
+			@PathVariable String preco, @PathVariable String dataagendada_string, @PathVariable Integer idNota , @PathVariable String nomeUsuario) {
 
 		LocalDate dataagendada = LocalDate.parse(dataagendada_string);
-		
-		
 
-		
-			BigDecimal novoPreco = new BigDecimal(preco);
+		BigDecimal novoPreco = new BigDecimal(preco);
 
+		if (idfamilia == 0) {
+
+			produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario);
+
+		} else {
 			
+			produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario);
+		}
 
-			produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota);
-
-		
 	}
 
 	///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
@@ -192,21 +197,32 @@ public class PrecificacaoResource {
 			todos = repository.buscarTodosPrecificar(data1, data2);
 
 		} else {
-			
 
 			if (filial == 0) {
 
 				todos = repository.buscarTodosPrecificarComFilial(data1, data2);
-			//	 System.out.println(filial + "igual a zero");
+				// System.out.println(filial + "igual a zero");
 
 			} else {
 
-			//	 System.out.println("busca o metodo de mulfilial" + filial);
+				// System.out.println("busca o metodo de mulfilial" + filial);
 				todos = repository.buscarTodosPorFilialPrecificar(data1, data2, filial);
 			}
 		}
 
 		return ResponseEntity.ok(todos);
+	}
+	
+	
+	@PutMapping("/notaId/{notaId}/status/{status}")
+	@Transactional
+	public void atualizaStatusNotaPrecificado(@PathVariable Integer notaId , @PathVariable Boolean status) {
+		
+		
+		notaFiscalRepository.atualizarStatusPrecificacao(notaId, status);
+		
+		
+		
 	}
 
 }

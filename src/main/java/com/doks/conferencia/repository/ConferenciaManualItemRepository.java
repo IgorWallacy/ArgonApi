@@ -10,7 +10,7 @@ import com.doks.conferencia.model.ConferenciaManualItem;
 
 public interface ConferenciaManualItemRepository extends JpaRepository<ConferenciaManualItem, Long> {
 
-	@Query(value = "select id,data_vencimento,observacao,idconferencia,idproduto,fatorconversao,quantidade,idunidademedida,status,quantidade_saida from doks_conferencia_manual_item where idconferencia=?1 order by id desc", nativeQuery = true)
+	@Query(value = "select id,data_vencimento,observacao,idconferencia,idproduto,fatorconversao,quantidade,idunidademedida,status,quantidade_saida, doks_conferencia_manual_item.produto_sem_cadastro  from doks_conferencia_manual_item where idconferencia=?1 order by id desc", nativeQuery = true)
 	List<ConferenciaManualItem> buscarPeloIdConferencia(Long id);
 	
 	
@@ -35,7 +35,8 @@ public interface ConferenciaManualItemRepository extends JpaRepository<Conferenc
 			+ "	doks_conferencia_manual_item.idproduto, \r\n"
 			+ "	doks_conferencia_manual_item.status, \r\n"
 			+ "(select sum(t1.quantidade) from vendas_itens_view t1 where t1.emissao >= doks_conferencia_manual.data_entrada and t1.emissao <= CURRENT_DATE and t1.produto = pr.codigo and cast(t1.filial as INTEGER) = ?1 ) as quantidade_saida,"
-			+ "	doks_conferencia_manual.idfilial\r\n"
+			+ "	doks_conferencia_manual.idfilial, \r\n"
+			+ " doks_conferencia_manual_item.produto_sem_cadastro "
 			+ "FROM\r\n"
 			+ "	doks_conferencia_manual_item\r\n"
 			+ "	INNER JOIN\r\n"
@@ -64,7 +65,8 @@ public interface ConferenciaManualItemRepository extends JpaRepository<Conferenc
 			+ "	doks_conferencia_manual_item.status, \r\n"
 		//	+ "(select sum(mve.quantidadesaida) from movimentoestoque mve where mve.data >= doks_conferencia_manual.data_entrada and mve.data <= CURRENT_DATE and mve.idproduto = doks_conferencia_manual_item.idproduto and mve.idfilial = ?1 and mve.tipodocumento = '1' and mve.cancelado = '0') as quantidade_saida,"
 		+ "(select sum(t1.quantidade) from vendas_itens_view t1 where t1.emissao >= doks_conferencia_manual.data_entrada and t1.emissao <= CURRENT_DATE and t1.produto = pr.codigo and cast(t1.filial as INTEGER) = ?1 ) as quantidade_saida,"
-		+ "	doks_conferencia_manual.idfilial\r\n"
+		+ "	doks_conferencia_manual.idfilial,\r\n"
+		+ " doks_conferencia_manual_item.produto_sem_cadastro "
 			+ "FROM\r\n"
 			+ "	doks_conferencia_manual_item\r\n"
 			+ "	INNER JOIN\r\n"
@@ -93,7 +95,8 @@ public interface ConferenciaManualItemRepository extends JpaRepository<Conferenc
 			+ "	doks_conferencia_manual_item.status, \r\n"
 		//	+ "(select sum(mve.quantidadesaida) from movimentoestoque mve where mve.data >= doks_conferencia_manual.data_entrada and mve.data <= CURRENT_DATE and mve.idproduto = doks_conferencia_manual_item.idproduto and mve.idfilial = ?1 and mve.tipodocumento = '1' and mve.cancelado = '0') as quantidade_saida,"
 		+ "(select sum(t1.quantidade) from vendas_itens_view t1 where t1.emissao >= doks_conferencia_manual.data_entrada and t1.emissao <= CURRENT_DATE and t1.produto = pr.codigo and cast(t1.filial as INTEGER) = ?1 ) as quantidade_saida,"
-		+ "	doks_conferencia_manual.idfilial\r\n"
+		+ "	doks_conferencia_manual.idfilial, \r\n"
+		+ " doks_conferencia_manual_item.produto_sem_cadastro "
 			+ "FROM\r\n"
 			+ "	doks_conferencia_manual_item\r\n"
 			+ "	INNER JOIN\r\n"

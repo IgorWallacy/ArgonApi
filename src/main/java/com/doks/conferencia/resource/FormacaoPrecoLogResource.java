@@ -37,7 +37,7 @@ public class FormacaoPrecoLogResource {
 		
 		List<FormacaoPrecoLog> produtos = repository.produtosAlteradosPorDataHora(idfilial, dataInicialF, dataFinalF);
 		 
-		 return ResponseEntity.ok(produtos);
+		 return ResponseEntity.ok(produtos); 
 	}
 	
 	
