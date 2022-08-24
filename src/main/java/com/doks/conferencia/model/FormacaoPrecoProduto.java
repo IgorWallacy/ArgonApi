@@ -51,6 +51,15 @@ public class FormacaoPrecoProduto {
 
 	@Column(name = "precocusto")
 	private BigDecimal precocusto;
+	
+	@Column(name="precopromocional")
+	private BigDecimal precopromocional;
+	
+	@Column(name="precopromocionalfamilia")
+	private BigDecimal precopromocionalfamilia;
+	
+	@Column(name="precopromocionalfilial")
+	private BigDecimal precopromocionalfilial;
 
 	public Integer getId() {
 		return id;
@@ -178,6 +187,34 @@ public class FormacaoPrecoProduto {
 
 	public void setDataalteracaopreco(LocalDate dataalteracaopreco) {
 		this.dataalteracaopreco = dataalteracaopreco;
+	}
+	
+	
+
+	public BigDecimal getPrecopromocional() {
+		return precopromocional;
+	}
+
+	public void setPrecopromocional(BigDecimal precopromocional) {
+		this.precopromocional = precopromocional;
+	}
+
+	public BigDecimal getPrecopromocionalfamilia() {
+		return precopromocionalfamilia;
+	}
+
+	public void setPrecopromocionalfamilia(BigDecimal precopromocionalfamilia) {
+		this.precopromocionalfamilia = precopromocionalfamilia;
+	}
+	
+	
+
+	public BigDecimal getPrecopromocionalfilial() {
+		return precopromocionalfilial;
+	}
+
+	public void setPrecopromocionalfilial(BigDecimal precopromocionalfilial) {
+		this.precopromocionalfilial = precopromocionalfilial;
 	}
 
 	@Override

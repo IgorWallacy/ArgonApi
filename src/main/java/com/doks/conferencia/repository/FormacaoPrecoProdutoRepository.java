@@ -9,11 +9,7 @@ import com.doks.conferencia.model.FormacaoPrecoProduto;
 
 public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPrecoProduto, Integer> {
 
-	@Query(value = "select id, idproduto, idfilial , preco, precocusto from formacaoprecoproduto where formacaoprecoproduto.idproduto=?1", nativeQuery = true)
-	List<FormacaoPrecoProduto> buscarPeloIdProduto(String id);
-
-	@Query(value = "select formacaoprecoproduto.id, formacaoprecoproduto.idproduto, formacaoprecoproduto.idfilial , formacaoprecoproduto.preco, formacaoprecoproduto.precocusto, (select hierarquia.id from hierarquia where hierarquia.id = produto.idhierarquia ) as idhierarquia, (select quantidade from total_estoque_view where total_estoque_view.idfilial = formacaoprecoproduto.idfilial and total_estoque_view.idproduto=formacaoprecoproduto.idproduto ) as estoque from formacaoprecoproduto inner join produto on formacaoprecoproduto.idproduto=produto.id where formacaoprecoproduto.idproduto=?1", nativeQuery = true)
-	List<FormacaoPrecoProduto> porId(Integer id);
+	
 
 	@Query(value = "SELECT\n" +
 			"	formacaoprecoproduto.ID AS ID,\n" +
@@ -32,8 +28,12 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"	unidademedida.nome as unidade,\n" +
 			"	hierarquia.nome AS hierarquia,\n" +
 
-			"	( SELECT quantidade FROM total_estoque_view WHERE total_estoque_view.idfilial = formacaoprecoproduto.idfilial AND total_estoque_view.idproduto = formacaoprecoproduto.idproduto ) AS estoque \n"
-			+
+			"	( SELECT quantidade FROM total_estoque_view WHERE total_estoque_view.idfilial = formacaoprecoproduto.idfilial AND total_estoque_view.idproduto = formacaoprecoproduto.idproduto ) AS estoque, \n"+
+			
+			" (select pp.valor from promocao pr join promocaoproduto pp on pr.id=pp.idpromocao  where pp.idproduto=produto.id  and pr.datainicial <= CURRENT_DATE and pr.datafinal>= CURRENT_DATE limit 1) as precopromocional, " +
+			" (select pp.valor from promocao pr join promocaoproduto pp on pr.id=pp.idpromocao join promocaofilial pf on pf.idpromocao=pr.id where pp.idproduto=produto.id and pf.idfilial=formacaoprecoproduto.idfilial and pr.datainicial <= CURRENT_DATE and pr.datafinal>= CURRENT_DATE limit 1) as precopromocionalfilial, " +
+			" (select pf.valor from promocao pr join promocaofamilia pf on pr.id=pf.idpromocao where pf.idfamilia=produto.idfamilia and pr.datainicial<=CURRENT_DATE and pr.datafinal>=CURRENT_DATE limit 1) as precopromocionalfamilia "+
+			
 			"FROM\n" +
 			"	formacaoprecoproduto\n" +
 			"	INNER JOIN produto ON formacaoprecoproduto.idproduto = produto.id\n" +
@@ -43,9 +43,10 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"	\n" +
 			"WHERE\n" +
 			"	produto.inativo = '0' \n" +
+			" and produto.id=?1 "+
 			"ORDER BY\n" +
 			"	produto.nome ASC\n" +
 			"	", nativeQuery = true)
-	List<FormacaoPrecoProduto> todos();
+	List<FormacaoPrecoProduto> porId(Integer id);
 
 }

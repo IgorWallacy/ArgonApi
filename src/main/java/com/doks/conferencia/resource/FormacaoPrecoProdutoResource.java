@@ -21,21 +21,12 @@ public class FormacaoPrecoProdutoResource {
 	
 	
 	
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<List<FormacaoPrecoProduto>> porId (@PathVariable Integer id) {
 		
 		
 		
 		return ResponseEntity.ok(repository.porId(id));
-	}
-			
-	
-	
-	@GetMapping()
-	public ResponseEntity<List<FormacaoPrecoProduto>> todos () {
-		
-		
-		
-		return ResponseEntity.ok(repository.todos());
 	}
 }
