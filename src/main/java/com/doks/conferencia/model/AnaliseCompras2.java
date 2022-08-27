@@ -39,6 +39,8 @@ public class AnaliseCompras2 {
 	
 	private BigDecimal customedio;
 	
+	private BigDecimal quantidade_compra;
+	
 	private BigDecimal quantidade_comprada;
 	
 	 private BigDecimal quantidade_vendida;
@@ -222,6 +224,14 @@ public class AnaliseCompras2 {
 
 	public void setCfop(String cfop) {
 		this.cfop = cfop;
+	}
+
+	public BigDecimal getQuantidade_compra() {
+		return quantidade_compra;
+	}
+
+	public void setQuantidade_compra(BigDecimal quantidade_compra) {
+		this.quantidade_compra = quantidade_compra;
 	}
 
 

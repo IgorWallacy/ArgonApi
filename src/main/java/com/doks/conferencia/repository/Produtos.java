@@ -25,11 +25,11 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	/////////////////////////////////////////ATUALIZA PRECO DA TABELA PRODUTO /////////////////////////////////////////////////
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update produto set preco = ?2 , dataalteracaopreco = ?3 where idfamilia=?1", nativeQuery = true)
+	@Query(value = "update produto set currentTimeMillis=(extract(epoch from current_timestamp)*1000), preco = ?2 , dataalteracaopreco = ?3 where idfamilia=?1", nativeQuery = true)
 	void updatePrecoProdutoFamilia(Integer idfamilia, BigDecimal preco, LocalDateTime agora);
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update produto set preco = ?2 , dataalteracaopreco = ?3 where id = ?1", nativeQuery = true)
+	@Query(value = "update produto set currentTimeMillis=(extract(epoch from current_timestamp)*1000), preco = ?2 , dataalteracaopreco = ?3 where id = ?1", nativeQuery = true)
 	void updatePrecoProduto(Integer id , BigDecimal preco, LocalDateTime agora);
 	
 	
@@ -38,24 +38,24 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
    /////////////////////////////////////////ATUALIZA PRECO DA TABELA FORMACAOPRECOPRODUTO ///////////////////////////////////////
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update formacaoprecoproduto set preco = ?2 , dataalteracaopreco = ?3 from produto where formacaoprecoproduto.idproduto = produto.id and produto.idfamilia=?1", nativeQuery = true)
+	@Query(value = "update formacaoprecoproduto set currentTimeMillis=(extract(epoch from current_timestamp)*1000),  preco = ?2 , dataalteracaopreco = ?3 from produto where formacaoprecoproduto.idproduto = produto.id and produto.idfamilia=?1", nativeQuery = true)
 	void updatePrecoFormacaoPrecoProdutoFamilia(Integer idfamilia, BigDecimal preco, LocalDateTime agora);
 	
 	
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update formacaoprecoproduto set preco = ?2 , dataalteracaopreco = ?3 where idproduto = ?1", nativeQuery = true)
+	@Query(value = "update formacaoprecoproduto set currentTimeMillis=(extract(epoch from current_timestamp)*1000),  preco = ?2 , dataalteracaopreco = ?3 where idproduto = ?1", nativeQuery = true)
 	void updatePrecoFormacaoPrecoProduto(Integer id , BigDecimal preco, LocalDateTime agora);
 
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update formacaoprecoproduto set preco = ?2 , dataalteracaopreco = ?3 from produto where formacaoprecoproduto.idproduto = produto.id and produto.idfamilia=?1 and formacaoprecoproduto.idfilial = ?4", nativeQuery = true)
+	@Query(value = "update formacaoprecoproduto set currentTimeMillis=(extract(epoch from current_timestamp)*1000),  preco = ?2 , dataalteracaopreco = ?3 from produto where formacaoprecoproduto.idproduto = produto.id and produto.idfamilia=?1 and formacaoprecoproduto.idfilial = ?4", nativeQuery = true)
 	void updatePrecoeENaoReplicaFormacaoPrecoProdutoFamilia(Integer idfamilia, BigDecimal novoPreco, LocalDateTime agora,
 			Integer idfilial);
 
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value = "update formacaoprecoproduto set preco = ?2 , dataalteracaopreco = ?3 where formacaoprecoproduto.idproduto = ?1 and formacaoprecoproduto.idfilial =?4 ", nativeQuery = true)
+	@Query(value = "update formacaoprecoproduto set currentTimeMillis=(extract(epoch from current_timestamp)*1000), preco = ?2 , dataalteracaopreco = ?3 where formacaoprecoproduto.idproduto = ?1 and formacaoprecoproduto.idfilial =?4 ", nativeQuery = true)
 	void updatePrecoENaoReplicaFormacaoPrecoProduto(Integer idproduto, BigDecimal novoPreco, LocalDateTime agora,
 			Integer idfilial);
 	

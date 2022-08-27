@@ -26,6 +26,9 @@ public class ProdutoBI {
 	@Column(name="filial")
 	private String filial;
 	
+	@Column(name="preco_custo")
+	private BigDecimal precoCusto;
+	
 	@Column(name="preco_medio_venda")
 	private BigDecimal precoMedioVenda;
 	
@@ -35,12 +38,22 @@ public class ProdutoBI {
 	@Column(name="quantidade_comprada")
 	private BigDecimal quantidadeComprada;
 	
+	@Column(name="quantidade_devolvida")
+	private BigDecimal quantidadeDevolvida;
+	
+	@Column(name="total_comprado")
+	private BigDecimal totalComprado;
+	
 	@Column(name="total_vendido")
 	private BigDecimal totalVendido;
 	
 	@Column(name="total_desconto")
 	private BigDecimal totalDesconto;
+	
+	@Column(name="total_devolucao")
+	private BigDecimal totalDevolucao;
 
+	
 	public Integer getId() {
 		return id;
 	}
@@ -110,6 +123,43 @@ public class ProdutoBI {
 
 	public void setTotalDesconto(BigDecimal totalDesconto) {
 		this.totalDesconto = totalDesconto;
+	}
+
+	public BigDecimal getQuantidadeDevolvida() {
+		return quantidadeDevolvida;
+	}
+
+	public void setQuantidadeDevolvida(BigDecimal quantidadeDevolvida) {
+		this.quantidadeDevolvida = quantidadeDevolvida;
+	}
+
+	public BigDecimal getTotalDevolucao() {
+		return totalDevolucao;
+	}
+
+	public void setTotalDevolucao(BigDecimal totalDevolucao) {
+		this.totalDevolucao = totalDevolucao;
+	}
+
+	
+	
+	
+	public BigDecimal getPrecoCusto() {
+		return precoCusto;
+	}
+
+	public void setPrecoCusto(BigDecimal precoCusto) {
+		this.precoCusto = precoCusto;
+	}
+	
+	
+
+	public BigDecimal getTotalComprado() {
+		return totalComprado;
+	}
+
+	public void setTotalComprado(BigDecimal totalComprado) {
+		this.totalComprado = totalComprado;
 	}
 
 	@Override
