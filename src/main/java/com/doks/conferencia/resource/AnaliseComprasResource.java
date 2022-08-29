@@ -27,6 +27,7 @@ public class AnaliseComprasResource {
 	
 	private List<AnaliseCompras2> compras = new ArrayList<AnaliseCompras2>();
 	
+	
 	@GetMapping("/produtos/{dataInicial}/{dataFinal}/{fornecedor}/{filial}/{dataInicialVenda}/{dataFinalVenda}")
 	public ResponseEntity<List<AnaliseCompras2>> produtosCompradosFornecedor (
 			@PathVariable String dataInicial, 

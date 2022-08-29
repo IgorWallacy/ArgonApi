@@ -1,5 +1,6 @@
 package com.doks.conferencia.resource;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,16 +33,35 @@ public class PedidoCompraResource {
 	List<PedidoItemCompra> itemPedidoList = new ArrayList<PedidoItemCompra>();
 
 	// private List<PedidoItemCompra> pedidos = new ArrayList<PedidoItemCompra>();
+	
+	@GetMapping("/todos")
+	public ResponseEntity<List<PedidoCompra>> todos () {
+		
+		return ResponseEntity.ok(repository.findAll());
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<PedidoCompra>> porIdPedido (@PathVariable Integer id) {
+		
+		return ResponseEntity.ok(repository.findById(id));
+	}
+	
 
 	@PostMapping("/salvar")
 	public ResponseEntity<PedidoCompra> salvar(@RequestBody PedidoCompra pedido) {
+		 
+		LocalDate now = LocalDate.now();
 
 		PedidoCompra pedidoSalvo = new PedidoCompra();
 
 		pedidoSalvo.setFornecedor(pedido.getFornecedor());
+		pedido.setDataEmissao(now);
 
+	
+		
 		pedidoSalvo = repository.save(pedido);
 
+		
 		return ResponseEntity.ok(pedidoSalvo);
 	}
 

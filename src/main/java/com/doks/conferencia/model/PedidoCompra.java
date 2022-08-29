@@ -26,6 +26,8 @@ public class PedidoCompra {
 	private LocalDate prazoEntrega;
 	
 	private String condicaoPagamento;
+	
+	private LocalDate dataEmissao;
 
 	
 
@@ -86,6 +88,14 @@ public class PedidoCompra {
 
 	public void setCondicaoPagamento(String condicaoPagamento) {
 		this.condicaoPagamento = condicaoPagamento;
+	}
+
+	public LocalDate getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(LocalDate dataEmissao) {
+		this.dataEmissao = dataEmissao;
 	}
 
 	
