@@ -52,11 +52,14 @@ public class PedidoCompraResource {
 		 
 		LocalDate now = LocalDate.now();
 
+		
+		
 		PedidoCompra pedidoSalvo = new PedidoCompra();
 
 		pedidoSalvo.setFornecedor(pedido.getFornecedor());
 		pedido.setDataEmissao(now);
 
+		
 	
 		
 		pedidoSalvo = repository.save(pedido);
@@ -69,22 +72,36 @@ public class PedidoCompraResource {
 	public ResponseEntity<PedidoItemCompra> salvarItem(@RequestBody PedidoItemCompra pedido,
 			@PathVariable Integer idPedido) {
 
-		// System.out.println(pedido.getIdpedido());
+		
 
 		PedidoItemCompra pedidoSalvo = new PedidoItemCompra();
 
+		
+		
 		pedidoSalvo.setIdproduto(pedido.getIdproduto());
 		pedidoSalvo.setIdpedido(pedido.getIdpedido());
-
+		pedidoSalvo.setUnidadeCompra(pedido.getUnidadeCompra());
+		pedidoSalvo.setFilial(pedido.getFilial());
+		
+		
 		pedidoSalvo = repositoryItem.save(pedido);
 
 		return ResponseEntity.ok(pedidoSalvo);
 	}
 
 	@GetMapping("/itens/pedidoId/{idPedido}")
-	public ResponseEntity<List<PedidoItemCompra>> getItemPedido(@PathVariable Long idPedido) {
+	public ResponseEntity<List<PedidoItemCompra>> getItemPedido(@PathVariable Integer idPedido) {
 
-		itemPedidoList = repositoryItem.findByIdpedido(idPedido);
+		itemPedidoList = repositoryItem.findByIdPedido(idPedido);
+
+		return ResponseEntity.ok(itemPedidoList);
+
+	}
+	
+	@GetMapping("/itens/pedidoId/{idPedido}/{idProduto}")
+	public ResponseEntity<List<PedidoItemCompra>> getItemPedidoProduto(@PathVariable Integer idPedido , @PathVariable Integer idProduto) {
+
+		itemPedidoList = repositoryItem.findByIdPedidoIdProduto(idPedido,idProduto);
 
 		return ResponseEntity.ok(itemPedidoList);
 
@@ -92,13 +109,16 @@ public class PedidoCompraResource {
 
 	@SuppressWarnings("unchecked")
 	@DeleteMapping("/deletar/{id}")
-	public ResponseEntity<PedidoItemCompra> deletarItemPedido(@PathVariable Long id) {
+	public ResponseEntity<PedidoItemCompra> deletarItemPedido(@PathVariable Integer id) {
 		
-		 Optional<PedidoItemCompra> item = repositoryItem.findById(id);
+		 PedidoItemCompra item = repositoryItem.porId(id);
+		 
+		 
+		
 		  if(item != null) {
 			   
 			  
-			  PedidoItemCompra itemEncontrado = item.get();
+			  PedidoItemCompra itemEncontrado = item;
 			 
 			//  repositoryItem.deletarITemPedido(id);
 			 
@@ -108,6 +128,40 @@ public class PedidoCompraResource {
 		  } else {
 		
 		  return (ResponseEntity<PedidoItemCompra>) ResponseEntity.notFound();
+		  }
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@DeleteMapping("/deletar/pedido/{id}")
+	public ResponseEntity<PedidoCompra> deletarPedido(@PathVariable Integer id) {
+		
+		 PedidoCompra item = repository.porId(id);
+		
+		 List<PedidoItemCompra> ic = repositoryItem.findByIdPedido(id);
+		 
+		 for (PedidoItemCompra pedidoItemCompra : ic) {
+		
+			// System.out.println(pedidoItemCompra.getIdpedido().getId());
+			 
+			 repositoryItem.delete(pedidoItemCompra);
+			 
+		}
+		 
+		 
+		 if(item != null ) {
+			   
+			  
+			  PedidoCompra itemEncontrado = item;
+			 
+			
+			 
+			  repository.delete(itemEncontrado);
+			   
+		   return ResponseEntity.ok(itemEncontrado);
+		  } else {
+		
+		  return (ResponseEntity<PedidoCompra>) ResponseEntity.notFound();
 		  }
 
 	}

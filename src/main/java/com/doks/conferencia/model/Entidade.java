@@ -1,5 +1,6 @@
 package com.doks.conferencia.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,9 @@ public class Entidade {
 	private String razaosocial;
 	
 	private String cnpjcpf;
+	
+	@Column(name="leadtimecompra")
+	private Integer leadttimecompra;
 
 	public Integer getId() {
 		return id;
@@ -70,6 +74,16 @@ public class Entidade {
 
 	public void setCnpjcpf(String cnpjcpf) {
 		this.cnpjcpf = cnpjcpf;
+	}
+	
+	
+
+	public Integer getLeadttimecompra() {
+		return leadttimecompra;
+	}
+
+	public void setLeadttimecompra(Integer leadttimecompra) {
+		this.leadttimecompra = leadttimecompra;
 	}
 
 	@Override

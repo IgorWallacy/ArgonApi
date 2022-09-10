@@ -12,13 +12,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
-@Table(name = "doks_pedido_item_compra")
+@Table(name = "doks_pedidocompra_item")
 public class PedidoItemCompra {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 	
 	
 	private Integer embalagem;
@@ -29,34 +32,73 @@ public class PedidoItemCompra {
 	private Produto idproduto;
 	
 	@ManyToOne
-	@JoinColumn(name = "idpedido", nullable = false)
+	@JoinColumn(name = "idpedidocompra", nullable = false)
 	@NotNull
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private PedidoCompra idpedido;
 	
+	@Column(name="preco")
 	private BigDecimal preco;
 	
+	@Column(name="quantidade")
+	private BigDecimal quantidade;
+	
+	@ManyToOne
+	@JoinColumn(name = "filial", nullable = false)
+	@NotNull
+	private Filial filial;
+	
+	@Column(name="doks_quantidade1")
 	private BigDecimal quantidade1;
 	
+	@Column(name="doks_quantidade2")
 	private BigDecimal quantidade2;
 	
-	@Column(name="quantidade_venda")
+	@Column(name="fatorconversao")
+	private BigDecimal fatorConversao;
+	
+	@Column(name="doks_quantidade_venda")
 	private BigDecimal quantidadeVenda;
 	
-	@Column(name="unidade_compra")
-	private String unidadeCompra;
+	@ManyToOne
+	@JoinColumn(name = "idunidademedida", nullable = false)
+	@NotNull
+	private UnidadeMedida unidadeCompra;
+
+	@Column(name="total")
+    private BigDecimal total;
+
+	
+	@Column(name="observacao" , columnDefinition="text")
+	private String observacao;
 
 	
 
-
-
 	
 
-	public Long getId() {
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+
+	public BigDecimal getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public Integer getEmbalagem() {
@@ -99,15 +141,19 @@ public class PedidoItemCompra {
 		this.quantidadeVenda = quantidadeVenda;
 	}
 
-	public String getUnidadeCompra() {
+	
+	
+	
+
+	
+
+	public UnidadeMedida getUnidadeCompra() {
 		return unidadeCompra;
 	}
 
-	public void setUnidadeCompra(String unidadeCompra) {
+	public void setUnidadeCompra(UnidadeMedida unidadeCompra) {
 		this.unidadeCompra = unidadeCompra;
 	}
-	
-	
 
 	public BigDecimal getPreco() {
 		return preco;
@@ -123,6 +169,16 @@ public class PedidoItemCompra {
 
 	public void setIdpedido(PedidoCompra idpedido) {
 		this.idpedido = idpedido;
+	}
+	
+	
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 
 	@Override
@@ -150,9 +206,24 @@ public class PedidoItemCompra {
 		return true;
 	}
 
-	
+	public BigDecimal getFatorConversao() {
+		return fatorConversao;
+	}
 
-	
+	public void setFatorConversao(BigDecimal fatorConversao) {
+		this.fatorConversao = fatorConversao;
+	}
+
+	public Filial getFilial() {
+		return filial;
+	}
+
+	public void setFilial(Filial filial) {
+		this.filial = filial;
+	}
+
+
+
 	
 
 	

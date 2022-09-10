@@ -1,7 +1,9 @@
 package com.doks.conferencia.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="doks_pedido_compra")
+@Table(name="doks_pedidocompra")
 public class PedidoCompra {
 	
 	@Id
@@ -19,17 +21,27 @@ public class PedidoCompra {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "identidade", nullable = false)
+	@JoinColumn(name = "idfornecedor", nullable = false)
 	@NotNull
 	private Entidade fornecedor;
 	
+	@Column(name="dataprevisaoentrega")
 	private LocalDate prazoEntrega;
 	
-	private String condicaoPagamento;
+	@ManyToOne
+	@JoinColumn(name = "idcondicaopagamento", nullable = false)
+	@NotNull
+	private CondicaoPagamento condicaoPagamento;
 	
+	@Column(name = "dataemissao")
 	private LocalDate dataEmissao;
+	
+	@Column(name="valortotal")
+	private BigDecimal total;
 
 	
+	@Column(name="observacao")
+	private String observacao;
 
 	
 
@@ -82,11 +94,15 @@ public class PedidoCompra {
 		this.prazoEntrega = prazoEntrega;
 	}
 
-	public String getCondicaoPagamento() {
+
+
+	
+
+	public CondicaoPagamento getCondicaoPagamento() {
 		return condicaoPagamento;
 	}
 
-	public void setCondicaoPagamento(String condicaoPagamento) {
+	public void setCondicaoPagamento(CondicaoPagamento condicaoPagamento) {
 		this.condicaoPagamento = condicaoPagamento;
 	}
 
@@ -96,6 +112,22 @@ public class PedidoCompra {
 
 	public void setDataEmissao(LocalDate dataEmissao) {
 		this.dataEmissao = dataEmissao;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	

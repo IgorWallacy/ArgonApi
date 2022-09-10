@@ -25,9 +25,14 @@ public class AnaliseCompras2 {
 	
 	private String cfop;
 	
+	private Integer idfilial;
+	
+
 	private BigDecimal embalagem;
 	
 	private String unidade_compra;
+	
+	private Integer id_unidade_compra;
 	
 	private String unidade_venda;
 	
@@ -95,6 +100,25 @@ public class AnaliseCompras2 {
 
 	public void setFornecedor(String fornecedor) {
 		this.fornecedor = fornecedor;
+	}
+
+	
+	public Integer getIdfilial() {
+		return idfilial;
+	}
+
+	public void setIdfilial(Integer idfilial) {
+		this.idfilial = idfilial;
+	}
+	
+	
+	
+	public Integer getId_unidade_compra() {
+		return id_unidade_compra;
+	}
+
+	public void setId_unidade_compra(Integer id_unidade_compra) {
+		this.id_unidade_compra = id_unidade_compra;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class CondicaoPagamentoResource {
 	@GetMapping("/todas")
 	public ResponseEntity<List<CondicaoPagamento>> ListarTodas () {
 		
-		todas = repository.findAll();
+		todas = repository.findAll(Sort.by(Sort.Order.desc("descricao")));
 		
 		
 		return ResponseEntity.ok(todas);
