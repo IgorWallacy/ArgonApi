@@ -60,7 +60,7 @@ public class AnaliseComprasResource {
 		
 		
 		
-		compras = repository2.comprasProdutos(dataI,dataF.plusDays(1),idFornecedor, dataIV, dataFV.plusDays(1) );
+		compras = repository2.comprasProdutos(dataI,dataF.plusDays(1),idFornecedor, dataIV, dataFV.plusDays(1), dataIV.minusDays(30) , dataIV.minusDays(60) );
 		
 		return ResponseEntity.ok(compras);
 	}
@@ -90,17 +90,22 @@ public class AnaliseComprasResource {
 		LocalDate dataIV = LocalDate.parse(dataInicialVenda);
 		LocalDate dataFV = LocalDate.parse(dataFinalVenda);
 		
+		
+		
 		Integer idFornecedor = Integer.parseInt(fornecedor); 
 		
 		
 	//	compras = repository.comprasProdutos(dataI,dataF.plusDays(1),idFornecedor,idFilial, dataIV, dataFV.plusDays(1));
 		
+	//	System.out.println(dataFV.minusDays(60));
 		
-		
-		compras = repository2.comprasProdutosFilial(dataI,dataF.plusDays(1),idFornecedor, filial,idProduto, dataIV, dataFV.plusDays(1) );
+		compras = repository2.comprasProdutosFilial(dataI,dataF.plusDays(1),idFornecedor, filial,idProduto, dataIV, dataFV.plusDays(1), dataIV.plusDays(30), dataIV.plusDays(60),dataFV.minusDays(30), dataFV.minusDays(0), dataFV.minusDays(60) );
+
 		
 		return ResponseEntity.ok(compras);
 	}
+	
+
  	
 
 }

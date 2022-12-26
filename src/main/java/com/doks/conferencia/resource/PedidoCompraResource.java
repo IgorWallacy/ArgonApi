@@ -72,7 +72,7 @@ public class PedidoCompraResource {
 	public ResponseEntity<PedidoItemCompra> salvarItem(@RequestBody PedidoItemCompra pedido,
 			@PathVariable Integer idPedido) {
 
-		
+	//	System.out.println(pedido.getId());
 
 		PedidoItemCompra pedidoSalvo = new PedidoItemCompra();
 

@@ -49,6 +49,12 @@ public class AnaliseCompras2 {
 	private BigDecimal quantidade_comprada;
 	
 	 private BigDecimal quantidade_vendida;
+	 
+	 private BigDecimal quantidade_vendida2;
+	 
+	 private BigDecimal quantidade_vendida3;
+	 
+	 private BigDecimal quantidade_vendida4;
 	
 	private BigDecimal saldo_estoque;
 	
@@ -258,6 +264,32 @@ public class AnaliseCompras2 {
 		this.quantidade_compra = quantidade_compra;
 	}
 
+	public BigDecimal getQuantidade_vendida2() {
+		return quantidade_vendida2;
+	}
+
+	public void setQuantidade_vendida2(BigDecimal quantidade_vendida2) {
+		this.quantidade_vendida2 = quantidade_vendida2;
+	}
+
+	public BigDecimal getQuantidade_vendida3() {
+		return quantidade_vendida3;
+	}
+
+	public void setQuantidade_vendida3(BigDecimal quantidade_vendida3) {
+		this.quantidade_vendida3 = quantidade_vendida3;
+	}
+
+	public BigDecimal getQuantidade_vendida4() {
+		return quantidade_vendida4;
+	}
+
+	public void setQuantidade_vendida4(BigDecimal quantidade_vendida4) {
+		this.quantidade_vendida4 = quantidade_vendida4;
+	}
+
+	
+	
 
 	
 	

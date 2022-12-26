@@ -24,6 +24,9 @@ public interface AnaliseComprasRepository2 extends JpaRepository<AnaliseCompras2
 			+ " t2.codigo as unidade_venda,"
 		
             + "(select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?4 and v1.emissao <= ?5 and v1.produto = t1.codigo  ) as quantidade_vendida,"
+            + "(0) as quantidade_vendida2,"
+            + "(0  ) as quantidade_vendida3,"
+            + "(0  ) as quantidade_vendida4,"
             + "(select avg(v1.total) from vendas_itens_view v1 where v1.emissao >= ?4 and v1.emissao <= ?5 and v1.produto = t1.codigo  ) as preco_medio_venda,"
 		
 			+ "	t3.nome AS fornecedor,\r\n"
@@ -251,7 +254,8 @@ public interface AnaliseComprasRepository2 extends JpaRepository<AnaliseCompras2
 			+ "	t1.inativo = 0 \r\n"
 			+ "	AND t1.tipo = 'P' \r\n"
 			+ "	AND t1.idfornecedor = ?3 ORDER BY (select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?4 and v1.emissao <= ?5 and v1.produto = t1.codigo) asc ", nativeQuery = true)
-           List<AnaliseCompras2> comprasProdutos(LocalDate dataI, LocalDate dataF, Integer fornecedor , LocalDate dataIV, LocalDate dataFV);
+           List<AnaliseCompras2> comprasProdutos(LocalDate dataI, LocalDate dataF, Integer fornecedor , LocalDate dataIV, LocalDate dataFV  , LocalDate dataIV2 , LocalDate dataIV3);
+
 
 
 
@@ -259,11 +263,13 @@ public interface AnaliseComprasRepository2 extends JpaRepository<AnaliseCompras2
 
 
 
+
 @Query(value = "SELECT\r\n"
 
 			+ " t1.id as id,"
-		
-		
+		    
+			
+		    
 			+ " t1.ean as ean,"
 			+ "	t1.precoultimacompra AS precoultimacompra,\r\n"
 			+ "	t1.codigo AS codigo,\r\n"
@@ -271,6 +277,9 @@ public interface AnaliseComprasRepository2 extends JpaRepository<AnaliseCompras2
 			+ " t2.codigo as unidade_venda,"
 		
   + "(select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?6 and v1.emissao <= ?7 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4 ) as quantidade_vendida,"
+  + "(select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?8 and v1.emissao <= ?10 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4 ) as quantidade_vendida2,"
+  + "(select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?9 and v1.emissao <= ?11 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4 ) as quantidade_vendida3,"
+  + "(select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?6 and v1.emissao <= ?12 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4 ) as quantidade_vendida4,"
   + "(select avg(v1.total) from vendas_itens_view v1 where v1.emissao >= ?6 and v1.emissao <= ?7 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4 ) as preco_medio_venda,"
 		
 			+ "	t3.nome AS fornecedor,\r\n"
@@ -497,6 +506,11 @@ public interface AnaliseComprasRepository2 extends JpaRepository<AnaliseCompras2
 			+ "	AND t1.tipo = 'P' \r\n"
 			+ "	AND t1.idfornecedor = ?3 and t1.id=?5 ORDER BY ( select sum(v1.quantidade) from vendas_itens_view v1 where v1.emissao >= ?6 and v1.emissao <= ?7 and v1.produto = t1.codigo and cast(v1.filial as INTEGER) = ?4) asc ", nativeQuery = true)
         List<AnaliseCompras2> comprasProdutosFilial(LocalDate dataI, LocalDate plusDays, Integer idFornecedor, Integer filial, Integer idProduto,
-		LocalDate dataIV, LocalDate plusDays2 );
+		LocalDate dataIV, LocalDate plusDays2, LocalDate dataIV2, LocalDate dataIV3 , LocalDate DataFV1 , LocalDate DataFV2, LocalDate dataIV4 );
+
+
+/***********************************************************************************************************************************************************************/
+
+
 
 }

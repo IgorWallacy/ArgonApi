@@ -2,6 +2,7 @@ package com.doks.conferencia.model;
 
 import java.math.BigDecimal;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -73,7 +74,11 @@ public class PedidoItemCompra {
 	private String observacao;
 
 	
-
+	
+	
+	
+	
+	
 	
 
 	public String getObservacao() {
@@ -222,6 +227,9 @@ public class PedidoItemCompra {
 		this.filial = filial;
 	}
 
+
+
+	
 
 
 	
