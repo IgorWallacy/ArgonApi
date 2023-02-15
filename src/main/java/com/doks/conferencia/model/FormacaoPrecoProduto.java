@@ -22,6 +22,9 @@ public class FormacaoPrecoProduto {
 	private String produto;
 	private String ean;
 	private String codigo;
+	
+	@Column(name="percentualmarkup")
+	private BigDecimal percentualmarkup;
 
 	@Column(name = "dataultimacompra")
 	private LocalDate dataultimacompra;
@@ -40,6 +43,13 @@ public class FormacaoPrecoProduto {
 	private String filial;
 
 	private String hierarquia;
+	
+	private String hierarquiaII;
+	
+	private String hierarquiaIII;
+	
+	@Column(name="idfamilia")
+	private Integer idfamilia;
 
 	private String unidade;
 
@@ -60,6 +70,25 @@ public class FormacaoPrecoProduto {
 	
 	@Column(name="precopromocionalfilial")
 	private BigDecimal precopromocionalfilial;
+	
+	@Column(name="doks_preco_agendado")
+	private BigDecimal precoAgendado;
+	
+	@Column(name="doks_data_agendada")
+	private LocalDate dataAgendada;
+	
+	@Column(name="doks_usuario_nome_agendado")
+	private String usuarioAgendado;
+	
+	
+
+	public BigDecimal getPercentualmarkup() {
+		return percentualmarkup;
+	}
+
+	public void setPercentualmarkup(BigDecimal percentualmarkup) {
+		this.percentualmarkup = percentualmarkup;
+	}
 
 	public Integer getId() {
 		return id;
@@ -215,6 +244,60 @@ public class FormacaoPrecoProduto {
 
 	public void setPrecopromocionalfilial(BigDecimal precopromocionalfilial) {
 		this.precopromocionalfilial = precopromocionalfilial;
+	}
+	
+	
+
+	public String getHierarquiaII() {
+		return hierarquiaII;
+	}
+
+	public void setHierarquiaII(String hierarquiaII) {
+		this.hierarquiaII = hierarquiaII;
+	}
+
+	public String getHierarquiaIII() {
+		return hierarquiaIII;
+	}
+
+	public void setHierarquiaIII(String hierarquiaIII) {
+		this.hierarquiaIII = hierarquiaIII;
+	}
+	
+	
+
+	public BigDecimal getPrecoAgendado() {
+		return precoAgendado;
+	}
+
+	public void setPrecoAgendado(BigDecimal precoAgendado) {
+		this.precoAgendado = precoAgendado;
+	}
+
+	public LocalDate getDataAgendada() {
+		return dataAgendada;
+	}
+
+	public void setDataAgendada(LocalDate dataAgendada) {
+		this.dataAgendada = dataAgendada;
+	}
+
+	public String getUsuarioAgendado() {
+		return usuarioAgendado;
+	}
+
+	public void setUsuarioAgendado(String usuarioAgendado) {
+		this.usuarioAgendado = usuarioAgendado;
+	}
+	
+	
+
+	public Integer getIdfamilia() {
+		return idfamilia;
+	}
+
+	public void setIdfamilia(Integer idfamilia) {
+		this.idfamilia = idfamilia;
 	}
 
 	@Override

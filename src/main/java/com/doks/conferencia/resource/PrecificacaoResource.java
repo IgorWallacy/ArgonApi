@@ -157,6 +157,28 @@ public class PrecificacaoResource {
 
 		}
 	}
+	
+	
+	/* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO na tabela de produtos --- TEMPORARIO */
+	@PutMapping("/produtos/precificar/agenda/produto/{idfilial}/{idproduto}/{idfamilia}/{preco}/{dataagendada_string}/{nomeUsuario}")
+	@Transactional
+	public void atualizarPrecoAgendadoProduto2(@PathVariable Integer idfilial,@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
+			@PathVariable String preco, @PathVariable String dataagendada_string , @PathVariable String nomeUsuario) {
+
+		LocalDate dataagendada = LocalDate.parse(dataagendada_string);
+
+		BigDecimal novoPreco = new BigDecimal(preco);
+
+		if (idfamilia == 0) {
+
+			produtosRpository.updateDataAgendadaItemProduto(idproduto, novoPreco, dataagendada, nomeUsuario,idfilial);
+
+		} else {
+			
+			produtosRpository.updateDataAgendadaItemProdutoFamilia( novoPreco, dataagendada, idfamilia, nomeUsuario,idfilial);
+		}
+
+	}
 
 	/* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO --- TEMPORARIO */
 	@PutMapping("/produtos/precificar/agenda/{idproduto}/{idfamilia}/{idNota}/{preco}/{dataagendada_string}/{nomeUsuario}")

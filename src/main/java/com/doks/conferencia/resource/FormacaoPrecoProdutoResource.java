@@ -21,6 +21,14 @@ public class FormacaoPrecoProdutoResource {
 	
 	
 	
+	@GetMapping("/todos")
+	public ResponseEntity<List<FormacaoPrecoProduto>> BuscaTodosProdutos () {
+		
+	
+		
+		return ResponseEntity.ok(repository.todos());
+	}
+	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<List<FormacaoPrecoProduto>> porId (@PathVariable Integer id) {
@@ -28,5 +36,13 @@ public class FormacaoPrecoProdutoResource {
 		
 		
 		return ResponseEntity.ok(repository.porId(id));
+	}
+	
+	@GetMapping("/codigo/{codigo}")
+	public ResponseEntity<List<FormacaoPrecoProduto>> porCodigo (@PathVariable String codigo) {
+		
+		
+		
+		return ResponseEntity.ok(repository.porCodigo(codigo));
 	}
 }
