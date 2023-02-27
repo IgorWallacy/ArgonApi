@@ -309,6 +309,11 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ "ORDER BY\r\n"
 					+ "	notafiscal.razaosocial ASC" ,nativeQuery =  true)
 			List<PrecificacaoItem> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial);
+
+
+
+		   
+		  
 	
 
 }

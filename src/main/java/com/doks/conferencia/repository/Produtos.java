@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.doks.conferencia.model.PrecificacaoItem;
 import com.doks.conferencia.model.Produto;
 
 public interface Produtos extends JpaRepository<Produto, Integer> {
@@ -103,6 +104,12 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	@Modifying(clearAutomatically = true)
 	@Query(value="update produto set lucrobrutominimo = ?2 where produto.idfamilia = ?1 " ,nativeQuery = true)
 	void atualizarMarkDownMinimoFamilia(Integer idfamilia, BigDecimal percentual);
+
+	
+	
+	
+	
+	
 
 	
 	

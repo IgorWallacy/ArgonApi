@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.doks.conferencia.model.Filial;
+import com.doks.conferencia.model.FormacaoPrecoProduto;
 import com.doks.conferencia.model.PrecificacaoItem;
 import com.doks.conferencia.repository.FilialRepository;
+import com.doks.conferencia.repository.FormacaoPrecoProdutoRepository;
 import com.doks.conferencia.repository.NotaFiscalRepository;
 import com.doks.conferencia.repository.PrecificacaoRepository;
 import com.doks.conferencia.repository.Produtos;
@@ -39,10 +41,14 @@ public class PrecificacaoResource {
 	private FilialRepository filialRepository;
 
 	private List<PrecificacaoItem> todos = new ArrayList<>();
+	
+	private List<FormacaoPrecoProduto> todos2 = new ArrayList<>();
 
 	private List<Filial> filiais = new ArrayList<>();
 	
 	
+	@Autowired
+	private FormacaoPrecoProdutoRepository formacaoPrecoProdutoRepository;
 	
 
 	/*****************************************************************************
@@ -56,6 +62,8 @@ public class PrecificacaoResource {
 
 		LocalDateTime data1 = LocalDateTime.parse(dataI);
 		LocalDateTime data2 = LocalDateTime.parse(dataF);
+		
+	//	System.out.println(dataI);
 
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
@@ -233,6 +241,41 @@ public class PrecificacaoResource {
 		}
 
 		return ResponseEntity.ok(todos);
+	}
+	
+	
+///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
+	/* atualiza tabela produto coluna preço */
+	@GetMapping("/produtos/precificar/produto/{dataI}/{dataF}/{filial}")
+	public ResponseEntity<List<FormacaoPrecoProduto>> todosProdutoDoks(@PathVariable String dataI, @PathVariable String dataF,
+			@PathVariable Integer filial) {
+
+		LocalDateTime data1 = LocalDateTime.parse(dataI);
+		LocalDateTime data2 = LocalDateTime.parse(dataF);
+
+		filiais = filialRepository.findAll();
+		int size = filiais.size();
+
+		if (size == 1) {
+
+			// System.out.println(filial);
+			todos = repository.buscarTodosPrecificar(data1, data2);
+
+		} else {
+
+			if (filial == 0) {
+
+				todos2 = formacaoPrecoProdutoRepository.buscarTodosPrecificarProdutoComFilial(data1, data2);
+				// System.out.println(filial + "igual a zero");
+
+			} else {
+
+				// System.out.println("busca o metodo de mulfilial" + filial);
+				todos2 = formacaoPrecoProdutoRepository.buscarTodosPorFilialPrecificar(data1, data2, filial);
+			}
+		}
+
+		return ResponseEntity.ok(todos2);
 	}
 	
 	
