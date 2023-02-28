@@ -24,7 +24,8 @@ public interface ProdutosSemVendasRepository extends JpaRepository<ProdutosSemVe
 			+ "t3.nome as grupoIII, "
 			+ "( SELECT nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( t3.codigo FROM 0 FOR 7 ) ) AS grupoI,\n"
             + "( SELECT nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( t3.codigo FROM 1 FOR 12 ) ) AS grupoII,\n" 
-			+ "( select quantidade from total_estoque_view ev  where ev.idproduto = t1.id and ev.idfilial = ?3) as saldo_estoque "
+			+ "( select quantidade from total_estoque_view ev  where ev.idproduto = t1.id and ev.idfilial = ?3) as saldo_estoque, "
+            + "( select MAX(viv.emissao) from vendas_itens_view viv  where viv.produto = t1.codigo and viv.tipoitem='P' and viv.filial= CAST( ?3 AS TEXT) group by viv.emissao  order by viv.emissao desc limit 1) as ultima_venda " 
 			
 			+ " from produto t1 "
 			+ "left join unidademedida t2 on (t2.id=t1.idunidademedida) "

@@ -35,6 +35,8 @@ public class ProdutosSemVendas {
 	private LocalDate ultimacompra;
 	
 	private BigDecimal saldo_estoque;
+	
+	private LocalDate ultima_venda;
 
 	public Integer getId() {
 		return id;
@@ -106,6 +108,16 @@ public class ProdutosSemVendas {
 
 	public void setSaldo_estoque(BigDecimal saldo_estoque) {
 		this.saldo_estoque = saldo_estoque;
+	}
+	
+	
+
+	public LocalDate getUltima_venda() {
+		return ultima_venda;
+	}
+
+	public void setUltima_venda(LocalDate ultima_venda) {
+		this.ultima_venda = ultima_venda;
 	}
 
 	public String getFornecedor() {

@@ -23,8 +23,8 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"  ( case when t10.nome is null then 'Sem promoção' else t10.nome end )as nome_promocao, "+
 			" t10.codigo as promocao, "+
 			
-			"( (select avg(mve.precoultimacompra) from movimentoestoque mve where mve.data >= t1.emissao  and mve.data <= t1.emissao and mve.idproduto = t2.id AND mve.idfilial = filial.id and mve.tipodocumento = '1' and mve.cancelado = '0') ) AS preco_ultima_compra," +
-			"( (select avg(mve.precoultimacompra) from movimentoestoque mve where mve.data >= t1.emissao  and mve.data <= t1.emissao and mve.idproduto = t2.id AND mve.idfilial = filial.id and mve.tipodocumento = '1' and mve.cancelado = '0') * t1.quantidade ) AS preco_ultima_compra_total," +
+			"( (select avg(mve.precoultimacompra)  from movimentoestoque mve where mve.data >= t1.emissao  and mve.data <= t1.emissao and mve.idproduto = t2.id AND mve.idfilial = filial.id and mve.tipodocumento = '1' and mve.cancelado = '0')  ) AS preco_ultima_compra," +
+			"( (select avg(mve.precoultimacompra)  from movimentoestoque mve where mve.data >= t1.emissao  and mve.data <= t1.emissao and mve.idproduto = t2.id AND mve.idfilial = filial.id and mve.tipodocumento = '1' and mve.cancelado = '0' )  * t1.quantidade ) AS preco_ultima_compra_total," +
 			"	t1.precounitario AS preco_unitario,\n" +
 			"	t1.filial AS codigo_filial,\n" +
 			"	filial.nome AS nome_filial \n" +
