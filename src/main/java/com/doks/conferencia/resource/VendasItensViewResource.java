@@ -21,8 +21,8 @@ public class VendasItensViewResource {
 	@Autowired
 	private VendasItensViewRepository repository;
 
-	@GetMapping("/bi/{dataI}/{dataF}")
-	private ResponseEntity<List<VendasItensView>> vendas(@PathVariable String dataI, @PathVariable String dataF) {
+	@GetMapping("/bi/{dataI}/{dataF}/{modocusto}")
+	private ResponseEntity<List<VendasItensView>> vendas(@PathVariable String dataI, @PathVariable String dataF, @PathVariable Integer modocusto) {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
 		 
@@ -31,7 +31,7 @@ public class VendasItensViewResource {
 		 
 		
 		
-		return ResponseEntity.ok(repository.getVendasBI( dataInicial , dataFinal));
+		return ResponseEntity.ok(repository.getVendasBI( dataInicial , dataFinal, modocusto));
 	}
 	
 }

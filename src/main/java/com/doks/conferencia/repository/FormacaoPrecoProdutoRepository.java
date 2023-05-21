@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.doks.conferencia.model.FormacaoPrecoProduto;
-import com.doks.conferencia.model.PrecificacaoItem;
 
 public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPrecoProduto, Integer> {
 
@@ -21,6 +20,7 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"   produto.codigo as codigo, " +
 			"	filial.nome AS filial,\n" +
 			"   filial.id as idfilial, " +
+			"   produto.doks_meta ,"+
 			"   produto.idfamilia ,"+
 			"	formacaoprecoproduto.preco AS preco,\n" +
 			"	formacaoprecoproduto.precocusto AS precocusto,\n" +
@@ -68,6 +68,7 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			+ "			CONCAT(filial.codigo, ' - ', filial.nome) AS filial, \r\n"
 			+ "            produto.idfamilia,"
 			+ "			   filial.id as idfilial,  \r\n"
+			+ "            produto.doks_meta ,"
 			+ "				formacaoprecoproduto.preco AS preco, \r\n"
 			+ "				formacaoprecoproduto.precocusto AS precocusto, \r\n"
 			+ "			   formacaoprecoproduto.dataultimacompra AS dataultimacompra, \r\n"
@@ -113,6 +114,7 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"   produto.idfamilia ,"+
 			"	filial.nome AS filial,\n" +
 			"   filial.id as idfilial, " +
+			"   produto.doks_meta ,"+
 			"	formacaoprecoproduto.preco AS preco,\n" +
 			"	formacaoprecoproduto.precocusto AS precocusto,\n" +
 			"   formacaoprecoproduto.dataultimacompra AS dataultimacompra,\n" +
@@ -160,6 +162,7 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"   produto.idfamilia ,"+
 			"	filial.nome AS filial,\n" +
 			"   filial.id as idfilial, " +
+			"   produto.doks_meta ,"+
 			"	formacaoprecoproduto.preco AS preco,\n" +
 			"	formacaoprecoproduto.precocusto AS precocusto,\n" +
 			"   formacaoprecoproduto.dataultimacompra AS dataultimacompra,\n" +
@@ -206,6 +209,7 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"   produto.idfamilia ,"+
 			"	filial.nome AS filial,\n" +
 			"   filial.id as idfilial, " +
+			"   produto.doks_meta ,"+
 			"	formacaoprecoproduto.preco AS preco,\n" +
 			"	formacaoprecoproduto.precocusto AS precocusto,\n" +
 			"   formacaoprecoproduto.dataultimacompra AS dataultimacompra,\n" +

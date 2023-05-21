@@ -9,18 +9,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.doks.conferencia.model.PrecificacaoItem;
 import com.doks.conferencia.model.Produto;
 
 public interface Produtos extends JpaRepository<Produto, Integer> {
 	
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia, idfamilia, idunidademedida from produto where inativo = 0 order by nome asc", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia, idfamilia, idunidademedida, doks_meta from produto where inativo = 0 order by nome asc", nativeQuery = true)
 	List<Produto> buscarProdutos();
 
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida from produto where id=?1", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta from produto where id=?1", nativeQuery = true)
 	Produto porId(String id);
 	
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida from produto where codigo= ?1", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta from produto where codigo= ?1", nativeQuery = true)
 	Produto findByCodigo(String codigo);
 	
 	/////////////////////////////////////////ATUALIZA PRECO DA TABELA PRODUTO /////////////////////////////////////////////////
@@ -104,6 +103,23 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	@Modifying(clearAutomatically = true)
 	@Query(value="update produto set lucrobrutominimo = ?2 where produto.idfamilia = ?1 " ,nativeQuery = true)
 	void atualizarMarkDownMinimoFamilia(Integer idfamilia, BigDecimal percentual);
+
+	
+	
+	@Modifying(clearAutomatically = true)
+	@Query(value="update produto set doks_meta = ?2 where id = ?1" ,nativeQuery = true)
+	void atualizarMeta(Integer idproduto, BigDecimal meta);
+
+	
+	
+	
+	@Modifying(clearAutomatically = true)
+	@Query(value=" update produto set doks_meta = ?2 where idfamilia = ?1" ,nativeQuery = true)
+	void atualizarMetaFamilia(Integer idfamilia, BigDecimal meta);
+
+	
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join hierarquia t1 on (t1.id = produto.idhierarquia) where produto.inativo = '0' and  t1.codigo LIKE CONCAT(?1, '%') " , nativeQuery = true)
+	List<Produto> buscarProdutosPorGrupo(String codigo);
 
 	
 	

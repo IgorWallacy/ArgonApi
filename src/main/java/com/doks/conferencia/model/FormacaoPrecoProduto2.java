@@ -28,6 +28,9 @@ public class FormacaoPrecoProduto2 {
 	
 	@Column(name="doks_usuario_nome_agendado")
 	private String usuarioAgendado;
+	
+	@Column(name="doks_meta")
+	private BigDecimal meta;
 
 	public Integer getId() {
 		return id;
@@ -59,6 +62,16 @@ public class FormacaoPrecoProduto2 {
 
 	public void setUsuarioAgendado(String usuarioAgendado) {
 		this.usuarioAgendado = usuarioAgendado;
+	}
+	
+	
+
+	public BigDecimal getMeta() {
+		return meta;
+	}
+
+	public void setMeta(BigDecimal meta) {
+		this.meta = meta;
 	}
 
 	@Override

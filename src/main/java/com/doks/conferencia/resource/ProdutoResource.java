@@ -33,6 +33,31 @@ public class ProdutoResource {
 		return produtos.buscarProdutos();
 	}
 	
+	@GetMapping("/{codigo}")
+	public List<Produto> porGrupo (@PathVariable String codigo) {
+		
+		return produtos.buscarProdutosPorGrupo(codigo);
+	}
+	
+	
+	@Transactional
+	@PutMapping("/atualizarmeta/{idproduto}/{idfamilia}/{meta}")
+	public void atualizarMeta(@PathVariable Integer idproduto , @PathVariable Integer idfamilia, @PathVariable BigDecimal meta) {
+		
+		
+	
+		if(idfamilia == 0) {
+		
+		produtos.atualizarMeta(idproduto , meta);
+		} else {
+			
+			
+			produtos.atualizarMetaFamilia(idfamilia , meta);
+			
+			
+		}
+		
+	}
 	
 	@Transactional
 	@PutMapping("/atualizarmarkupminimo/{idproduto}/{idfamilia}/{percentual}")

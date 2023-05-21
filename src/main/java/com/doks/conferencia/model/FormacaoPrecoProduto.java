@@ -74,6 +74,9 @@ public class FormacaoPrecoProduto {
 	@Column(name="doks_preco_agendado")
 	private BigDecimal precoAgendado;
 	
+	@Column(name="doks_meta")
+	private BigDecimal meta;
+	
 	@Column(name="doks_data_agendada")
 	private LocalDate dataAgendada;
 	
@@ -291,6 +294,16 @@ public class FormacaoPrecoProduto {
 	}
 	
 	
+	
+	
+
+	public BigDecimal getMeta() {
+		return meta;
+	}
+
+	public void setMeta(BigDecimal meta) {
+		this.meta = meta;
+	}
 
 	public Integer getIdfamilia() {
 		return idfamilia;

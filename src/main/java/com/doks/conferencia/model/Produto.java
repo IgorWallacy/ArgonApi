@@ -2,6 +2,8 @@ package com.doks.conferencia.model;
 
 
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +33,9 @@ public class Produto {
 	@Column(name="inativo")
 	private int inativo;
 	
+	@Column(name="doks_meta")
+	private BigDecimal meta;
+	
 	@ManyToOne
 	@JoinColumn(name = "idunidademedida", nullable = false)
 	private UnidadeMedida idUnidadeMedida;
@@ -51,10 +56,18 @@ public class Produto {
 	
 
 
-
+ 
 	
 
 	
+
+	public BigDecimal getMeta() {
+		return meta;
+	}
+
+	public void setMeta(BigDecimal meta) {
+		this.meta = meta;
+	}
 
 	public UnidadeMedida getIdUnidadeMedida() {
 		return idUnidadeMedida;

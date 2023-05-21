@@ -63,6 +63,12 @@ public class VendasItensView {
 	
 	@Column(name="nome_filial")
 	private String nomeFilial;
+	
+	@Column(name="meta")
+	private BigDecimal meta;
+	
+	@Column(name="fornecedor")
+	private String fornecedor;
 
 	
 
@@ -190,6 +196,14 @@ public class VendasItensView {
 	
 	
 
+	public BigDecimal getMeta() {
+		return meta;
+	}
+
+	public void setMeta(BigDecimal meta) {
+		this.meta = meta;
+	}
+
 	public BigDecimal getPrecoultimacompratotal() {
 		return precoultimacompratotal;
 	}
@@ -213,6 +227,14 @@ public class VendasItensView {
 			return false;
 		VendasItensView other = (VendasItensView) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public String getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(String fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	
