@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.doks.conferencia.model.Filial;
 import com.doks.conferencia.model.ProdutosSemVendas;
 import com.doks.conferencia.repository.FilialRepository;
-import com.doks.conferencia.repository.NotaFiscalRepository;
+
 import com.doks.conferencia.repository.ProdutosSemVendasRepository;
 
 @RestController
@@ -30,27 +30,27 @@ public class ProdutoSemVendaResource {
 	
 	private List<Filial> filiais = new ArrayList<>();
 	
-	@GetMapping("/produto/{dataI}/{dataF}/{filial}/{ultimaCompra}")
-	public ResponseEntity<List<ProdutosSemVendas>> todos (@PathVariable String dataI , @PathVariable String  dataF, @PathVariable Integer filial, @PathVariable String ultimaCompra) {
+	@GetMapping("/produto/{dataI}/{dataF}/{filial}/{ultimaCompra}/{ultimaVenda}")
+	public ResponseEntity<List<ProdutosSemVendas>> todos (@PathVariable String dataI , @PathVariable String  dataF, @PathVariable Integer filial, @PathVariable String ultimaCompra, @PathVariable String ultimaVenda) {
 		
 		
 		
 		LocalDate data1 = LocalDate.parse(dataI);
 		LocalDate data2 = LocalDate.parse(dataF);
 		LocalDate dataUltimaCompra = LocalDate.parse(ultimaCompra);
-		
+		LocalDate dataUltimaVenda = LocalDate.parse(ultimaVenda);
 		
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
 
 		if (size == 1) { 
 			
-			return ResponseEntity.ok(repository.todos1Filial( data1, data2, filial, dataUltimaCompra));
+			return ResponseEntity.ok(repository.todos1Filial( data1, data2, filial, dataUltimaCompra , dataUltimaVenda));
 		} else {
 		
 		
 		
-		return ResponseEntity.ok(repository.todos( data1, data2, filial, dataUltimaCompra));
+		return ResponseEntity.ok(repository.todos( data1, data2, filial, dataUltimaCompra, dataUltimaVenda));
 		}
 	}
 
