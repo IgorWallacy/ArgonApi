@@ -7,7 +7,7 @@ import com.doks.conferencia.model.Filial;
 
 public interface FilialRepository extends JpaRepository<Filial, Integer> {
 
-	@Query( value = "select id,codigo,nome,razaosocial from filial where id=?1" ,nativeQuery = true)
+	@Query( value = "select id,codigo,nome,razaosocial, logofilial from filial where id=?1" ,nativeQuery = true)
 	Filial porId (Integer id);
 
 }

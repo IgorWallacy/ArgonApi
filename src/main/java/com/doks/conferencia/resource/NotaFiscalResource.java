@@ -121,7 +121,7 @@ public class NotaFiscalResource {
 			
 		Lote lote = new Lote();
 		
-		LocalDate agora = LocalDate.now();
+		LocalDateTime agora = LocalDateTime.now();
 		lote.setEntrada(agora);
 		
 		lote.setIdfilial(item.getIdConferencia().getFilial());

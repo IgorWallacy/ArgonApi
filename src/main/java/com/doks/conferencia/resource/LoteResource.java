@@ -1,6 +1,7 @@
 package com.doks.conferencia.resource;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ public class LoteResource {
 	@PostMapping("/salvar/filial/{idfilial}")
 	public  ResponseEntity<Lote> salvar(@PathVariable ("idfilial") Integer idfilial, @RequestBody Lote lote )  {
 		
-			
-			LocalDate agora = LocalDate.now();
+
+
 				
 			Filial filial = filialRepository.porId(idfilial);
 			
@@ -46,11 +47,12 @@ public class LoteResource {
 			
 
 			Lote lote1 = new Lote();
-			
-			
+
+			lote1.setId(lote.getId());
 			lote1.setIdfilial(filial);
-			lote1.setCodigo(null);
-			lote1.setEntrada(agora);
+			lote1.setCodigo(lote.getCodigo());
+
+			lote1.setEntrada(lote.getEntrada());
 			lote1.setFabricacao(null);
 			
 			lote1.setIdProduto(lote.getIdProduto());
@@ -73,7 +75,7 @@ public class LoteResource {
 	@GetMapping("/todos")
 	public ResponseEntity<List<Lote>> listar () {
 		
-		List<Lote> todos = repository.findAll(Sort.by("idProduto.nome"));
+		List<Lote> todos = repository.findAll(Sort.by("entrada").descending());
 		
 		return ResponseEntity.ok(todos);
 		

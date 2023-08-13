@@ -1,6 +1,7 @@
 package com.doks.conferencia.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,9 +20,9 @@ public class Lote {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	private Integer codigo;
+	private String codigo;
 	
-	private LocalDate entrada;
+	private LocalDateTime entrada;
 	
 	private LocalDate fabricacao;
 	
@@ -45,19 +46,19 @@ public class Lote {
 		this.id = id;
 	}
 
-	public Integer getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Integer codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
-	public LocalDate getEntrada() {
+	public LocalDateTime getEntrada() {
 		return entrada;
 	}
 
-	public void setEntrada(LocalDate entrada) {
+	public void setEntrada(LocalDateTime entrada) {
 		this.entrada = entrada;
 	}
 
