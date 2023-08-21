@@ -25,7 +25,11 @@ public class ProdutoResource {
 	@Autowired
 	private Produtos produtos;
 	
-	
+	@GetMapping("/familia/{id}")
+	public List<Produto> getProdutoFamilia (@PathVariable String id) {
+
+		return produtos.buscarProdutosFamilia(Integer.parseInt(id));
+	}
 	
 	@GetMapping
 	public List<Produto> todos () {

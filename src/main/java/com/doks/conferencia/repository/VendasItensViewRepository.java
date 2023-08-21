@@ -45,4 +45,5 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"	AND  ?2 order by t1.quantidade desc  \n" , nativeQuery = true)
 	List<VendasItensView> getVendasBI(LocalDate dataInicial , LocalDate dataFinal, Integer modocusto);
 
+
 }

@@ -121,16 +121,6 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join hierarquia t1 on (t1.id = produto.idhierarquia) where produto.inativo = '0' and  t1.codigo LIKE CONCAT(?1, '%') " , nativeQuery = true)
 	List<Produto> buscarProdutosPorGrupo(String codigo);
 
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
- 
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto where produto.inativo = '0' and produto.idfamilia=?1 " , nativeQuery = true)
+	List<Produto> buscarProdutosFamilia(Integer id);
 }
