@@ -87,6 +87,8 @@ public class PrecificacaoItem {
 	
 	@Column(name="doks_precificado")
 	private Boolean precificado;
+	@Column(name="cfop")
+	private String cfop;
 	
 	
 	
@@ -293,6 +295,14 @@ public class PrecificacaoItem {
 
 	public void setUsuarioAgendado(String usuarioAgendado) {
 		this.usuarioAgendado = usuarioAgendado;
+	}
+
+	public String getCfop() {
+		return cfop;
+	}
+
+	public void setCfop(String cfop) {
+		this.cfop = cfop;
 	}
 
 	@Override
