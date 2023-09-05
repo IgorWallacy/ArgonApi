@@ -2,6 +2,7 @@ package com.doks.conferencia.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,16 @@ public class NotaFiscalItem {
 	
 	@Column(name="doks_usuario_nome_agendado")
 	private String usuarioAgendado;
+	@Column(name="doks_data_inclusao")
+	private LocalDateTime dataInclusao;
+
+	public LocalDateTime getDataInclusao() {
+		return dataInclusao;
+	}
+
+	public void setDataInclusao(LocalDateTime dataInclusao) {
+		this.dataInclusao = dataInclusao;
+	}
 
 	public Integer getId() {
 		return id;

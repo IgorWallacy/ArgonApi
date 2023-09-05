@@ -3,8 +3,13 @@ package com.doks.conferencia.resource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,10 +65,20 @@ public class PrecificacaoResource {
 	public ResponseEntity<List<PrecificacaoItem>> todos(@PathVariable String dataI, @PathVariable String dataF,
 			@PathVariable Integer filial) {
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI);
-		LocalDateTime data2 = LocalDateTime.parse(dataF);
-		
-	//	System.out.println(dataI);
+		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+				.optionalStart()
+				.appendLiteral(" GMT")
+				.appendOffset("+HH:mm", "Z")
+				.optionalEnd()
+				.toFormatter();
+
+		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+
+
+
+
 
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
@@ -196,27 +211,43 @@ public class PrecificacaoResource {
 
 		LocalDate dataagendada = LocalDate.parse(dataagendada_string);
 
+		LocalDateTime dataInclusao = LocalDateTime.now();
+
+
 		BigDecimal novoPreco = new BigDecimal(preco);
 
 		if (idfamilia == 0) {
 
-			produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario);
+			produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario,dataInclusao);
 
 		} else {
 			
-			produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario);
+			produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario,dataInclusao);
 		}
 
 	}
 
 	///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
 	/* atualiza tabela produto coluna preço */
-	@GetMapping("/produtos/precificar/{dataI}/{dataF}/{filial}")
+	@GetMapping("/produtos/precificar/{dataI}/{dataF}/{filial}/{modoPesquisa}")
 	public ResponseEntity<List<PrecificacaoItem>> todosDoks(@PathVariable String dataI, @PathVariable String dataF,
-			@PathVariable Integer filial) {
+			@PathVariable Integer filial, @PathVariable String modoPesquisa) {
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI);
-		LocalDateTime data2 = LocalDateTime.parse(dataF);
+		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+				.optionalStart()
+				.appendLiteral(" GMT")
+				.appendOffset("+HH:mm", "Z")
+				.optionalEnd()
+				.toFormatter();
+
+		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+
+
+
+
+		Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
 
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
@@ -224,19 +255,19 @@ public class PrecificacaoResource {
 		if (size == 1) {
 
 			// System.out.println(filial);
-			todos = repository.buscarTodosPrecificar(data1, data2);
+			todos = repository.buscarTodosPrecificar(data1, data2 , modoPesquisaInteger);
 
 		} else {
 
 			if (filial == 0) {
 
-				todos = repository.buscarTodosPrecificarComFilial(data1, data2);
+				todos = repository.buscarTodosPrecificarComFilial(data1, data2, modoPesquisaInteger);
 				// System.out.println(filial + "igual a zero");
 
 			} else {
 
 				// System.out.println("busca o metodo de mulfilial" + filial);
-				todos = repository.buscarTodosPorFilialPrecificar(data1, data2, filial);
+				todos = repository.buscarTodosPorFilialPrecificar(data1, data2, filial, modoPesquisaInteger);
 			}
 		}
 
@@ -246,12 +277,25 @@ public class PrecificacaoResource {
 	
 ///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
 	/* atualiza tabela produto coluna preço */
-	@GetMapping("/produtos/precificar/produto/{dataI}/{dataF}/{filial}")
+	@GetMapping("/produtos/precificar/produto/{dataI}/{dataF}/{filial}/{modoPesquisa}")
 	public ResponseEntity<List<FormacaoPrecoProduto>> todosProdutoDoks(@PathVariable String dataI, @PathVariable String dataF,
-			@PathVariable Integer filial) {
+			@PathVariable Integer filial, @PathVariable String modoPesquisa) {
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI);
-		LocalDateTime data2 = LocalDateTime.parse(dataF);
+		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+				.optionalStart()
+				.appendLiteral(" GMT")
+				.appendOffset("+HH:mm", "Z")
+				.optionalEnd()
+				.toFormatter();
+
+		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+
+
+
+
+		Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
 
 		filiais = filialRepository.findAll();
 		int size = filiais.size();
@@ -259,7 +303,7 @@ public class PrecificacaoResource {
 		if (size == 1) {
 
 			// System.out.println(filial);
-			todos = repository.buscarTodosPrecificar(data1, data2);
+			todos = repository.buscarTodosPrecificar(data1, data2, modoPesquisaInteger);
 
 		} else {
 

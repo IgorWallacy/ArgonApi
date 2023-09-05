@@ -27,6 +27,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 			+ " produto.preco as precoatual,"
 			+ "	notafiscalitem.doks_preco_agendado as precoagendado, \r\n"
 			+ " notafiscalitem.doks_data_agendada as dataagendada, "
+			   + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 			+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado, "
 			+ " produto.ean as ean, "
 			+ " produto.idfamilia as idfamilia,"
@@ -78,6 +79,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ "	formacaoprecoproduto.preco as precoatual, \r\n"
 					+ " notafiscalitem.doks_data_agendada as dataagendada, "
 					+ " notafiscalitem.doks_preco_agendado as precoagendado, "
+				 + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 					+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado, "
 					+ " produto.ean as ean, "
 					+ " produto.idfamilia as idfamilia,"
@@ -129,6 +131,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 				+ "	formacaoprecoproduto.preco as precoatual, \r\n"
 				+ " notafiscalitem.doks_data_agendada as dataagendada, "
 				+ " notafiscalitem.doks_preco_agendado as precoagendado, "
+			 + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 				+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado, "
 				+ " produto.ean as ean, "
 				+ " produto.idfamilia as idfamilia,"
@@ -184,6 +187,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ "	formacaoprecoproduto.preco as precoatual, \r\n"
 					+ " notafiscalitem.doks_data_agendada as dataagendada, "
 					+ " notafiscalitem.doks_preco_agendado as precoagendado, "
+				 + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 					+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado,"
 					+ " produto.ean as ean, "
 					+ " produto.idfamilia as idfamilia,"
@@ -213,8 +217,8 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ " and notafiscal.tipodocumento= 'E' "
 					+ " and formacaoprecoproduto.idfilial = filial.id "
 					+ "ORDER BY\r\n"
-					+ "	notafiscal.razaosocial ASC" ,nativeQuery =  true)
-		 		List<PrecificacaoItem> buscarTodosPrecificarComFilial(LocalDateTime data1, LocalDateTime data2);
+					+ "	notafiscalitem.doks_data_inclusao ASC" ,nativeQuery =  true)
+		 		List<PrecificacaoItem> buscarTodosPrecificarComFilial(LocalDateTime data1, LocalDateTime data2, Integer modoPesquisa);
 	 
 	 
 	 		
@@ -235,6 +239,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 				+ " produto.preco as precoatual,"
 				+ "	notafiscalitem.doks_preco_agendado as precoagendado, \r\n"
 				+ " notafiscalitem.doks_data_agendada as dataagendada, "
+				   + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 				+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado,"
 				+ " produto.ean as ean, "
 				+ " produto.idfamilia as idfamilia,"
@@ -256,13 +261,17 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 				+ "	ON \r\n"
 				+ "		notafiscalitem.idproduto = produto.\"id\"\r\n"
 				+ " INNER JOIN filial on notafiscal.idfilial = filial.id "
-				+ " WHERE\r\n"
-				+ "	notafiscalitem.doks_data_agendada BETWEEN ?1 AND ?2  \r\n"
+				+ " WHERE CASE "
+				   + "    WHEN ?3 = 0 THEN "
+				   + "    notafiscalitem.doks_data_agendada BETWEEN ?1 AND ?2 "
+				   + "    ELSE"
+				   + "    notafiscalitem.doks_data_inclusao BETWEEN ?1 AND ?2"
+				   + "    END"
 			
 				+ " and notafiscal.tipodocumento= 'E' "
 				+ "ORDER BY\r\n"
-				+ "	notafiscal.razaosocial ASC" ,nativeQuery =  true)
-				List<PrecificacaoItem> buscarTodosPrecificar(LocalDateTime dataInicial , LocalDateTime dataFinal);
+				+ "	notafiscalitem.doks_data_inclusao ASC" ,nativeQuery =  true)
+				List<PrecificacaoItem> buscarTodosPrecificar(LocalDateTime dataInicial , LocalDateTime dataFinal, Integer modoPesquisa);
 		   
 		       
 		       
@@ -282,6 +291,7 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ "	formacaoprecoproduto.preco as precoatual, \r\n"
 					+ " notafiscalitem.doks_data_agendada as dataagendada, "
 					+ " notafiscalitem.doks_preco_agendado as precoagendado, "
+				   + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
 					+ " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado,"
 					+ " produto.ean as ean, "
 					+ " produto.idfamilia as idfamilia,"
@@ -313,8 +323,8 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
 					+ " and formacaoprecoproduto.idfilial = filial.id "
 					
 					+ "ORDER BY\r\n"
-					+ "	notafiscal.razaosocial ASC" ,nativeQuery =  true)
-			List<PrecificacaoItem> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial);
+					+ "	notafiscalitem.doks_data_inclusao ASC" ,nativeQuery =  true)
+			List<PrecificacaoItem> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial, Integer modoPesquisa);
 
 
 

@@ -89,8 +89,8 @@ public class PrecificacaoItem {
 	private Boolean precificado;
 	@Column(name="cfop")
 	private String cfop;
-	
-	
+	@Column(name="doks_data_inclusao")
+	private LocalDateTime dataInclusao;
 	
 	public Boolean getPrecificado() {
 		return precificado;
@@ -155,12 +155,15 @@ public class PrecificacaoItem {
 	public void setPrecocusto(BigDecimal precocusto) {
 		this.precocusto = precocusto;
 	}
-	
-	
-	
-	
-   
-	
+
+
+	public LocalDateTime getDataInclusao() {
+		return dataInclusao;
+	}
+
+	public void setDataInclusao(LocalDateTime dataInclusao) {
+		this.dataInclusao = dataInclusao;
+	}
 
 	public BigDecimal getPrecopromocionalfamilia() {
 		return precopromocionalfamilia;
