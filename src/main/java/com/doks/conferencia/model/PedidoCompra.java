@@ -13,12 +13,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="doks_pedidocompra")
+@Table(name="pedidocompra")
 public class PedidoCompra {
 	
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@Column(name="codigo")
+	private Integer codigo;
 	
 	@ManyToOne
 	@JoinColumn(name = "idfornecedor", nullable = false)
@@ -43,7 +45,14 @@ public class PedidoCompra {
 	@Column(name="observacao")
 	private String observacao;
 
-	
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
 
 	@Override
 	public int hashCode() {

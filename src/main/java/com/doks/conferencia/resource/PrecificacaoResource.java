@@ -33,305 +33,299 @@ import com.doks.conferencia.repository.Produtos;
 @RequestMapping("/api_precificacao")
 public class PrecificacaoResource {
 
-	@Autowired
-	private PrecificacaoRepository repository;
+    @Autowired
+    private PrecificacaoRepository repository;
 
-	@Autowired
-	private Produtos produtosRpository;
-	
-	@Autowired
-	private NotaFiscalRepository notaFiscalRepository;
+    @Autowired
+    private Produtos produtosRpository;
 
-	@Autowired
-	private FilialRepository filialRepository;
+    @Autowired
+    private NotaFiscalRepository notaFiscalRepository;
 
-	private List<PrecificacaoItem> todos = new ArrayList<>();
-	
-	private List<FormacaoPrecoProduto> todos2 = new ArrayList<>();
+    @Autowired
+    private FilialRepository filialRepository;
 
-	private List<Filial> filiais = new ArrayList<>();
-	
-	
-	@Autowired
-	private FormacaoPrecoProdutoRepository formacaoPrecoProdutoRepository;
-	
+    private List<PrecificacaoItem> todos = new ArrayList<>();
 
-	/*****************************************************************************
-	 * ATUALIZACAO DE PREÇOS
-	 *********************************************/
-	///// BUSCA AS NOTAS PELA DATA DE INCLUSAO //////////////
-	/* atualiza tabela produto coluna preço */
-	@GetMapping("/produtos/precificar/agendar/{dataI}/{dataF}/{filial}")
-	public ResponseEntity<List<PrecificacaoItem>> todos(@PathVariable String dataI, @PathVariable String dataF,
-			@PathVariable Integer filial) {
+    private List<FormacaoPrecoProduto> todos2 = new ArrayList<>();
 
-		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
-				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-				.optionalStart()
-				.appendLiteral(" GMT")
-				.appendOffset("+HH:mm", "Z")
-				.optionalEnd()
-				.toFormatter();
+    private List<Filial> filiais = new ArrayList<>();
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
-		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
 
+    @Autowired
+    private FormacaoPrecoProdutoRepository formacaoPrecoProdutoRepository;
 
 
+    /*****************************************************************************
+     * ATUALIZACAO DE PREÇOS
+     *********************************************/
+    ///// BUSCA AS NOTAS PELA DATA DE INCLUSAO //////////////
+    /* atualiza tabela produto coluna preço */
+    @GetMapping("/produtos/precificar/agendar/{dataI}/{dataF}/{filial}")
+    public ResponseEntity<List<PrecificacaoItem>> todos(@PathVariable String dataI, @PathVariable String dataF,
+                                                        @PathVariable Integer filial) {
 
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                .optionalStart()
+                .appendLiteral(" GMT")
+                .appendOffset("+HH:mm", "Z")
+                .optionalEnd()
+                .toFormatter();
 
-		filiais = filialRepository.findAll();
-		int size = filiais.size();
+        LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+        LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
 
-		if (size == 1) {
 
-			// System.out.println(filial);
-			todos = repository.buscarTodosAgendar(data1, data2);
-			// System.out.println("buscando a tabela produto");
+        filiais = filialRepository.findAll();
+        int size = filiais.size();
 
-		} else {
+        if (size == 1) {
 
-			if (filial == 0) {
+            // System.out.println(filial);
+            todos = repository.buscarTodosAgendar(data1, data2);
+            // System.out.println("buscando a tabela produto");
 
-				todos = repository.buscarTodosComFilialAgendar(data1, data2, filial);
-				// System.out.println(filial + "igual a zero");
+        } else {
 
-			} else {
+            if (filial == 0) {
 
-				// System.out.println("busca o metodo de mulfilial" + filial);
-				todos = repository.buscarTodosPorFilial(data1, data2, filial);
-			}
-		}
+                todos = repository.buscarTodosComFilialAgendar(data1, data2, filial);
+                // System.out.println(filial + "igual a zero");
 
-		return ResponseEntity.ok(todos);
-	}
+            } else {
 
-	/*
-	 * EXECUTA A ATUALIZACAO DE PREÇOS NA TABELA PRODUTO NO CAMPO PREÇO ..... METODO
-	 * FINAL
-	 */
-	@PutMapping("/produtos/precificar/{idproduto}/{idfamilia}/{preco}/{idfilial}/{replicarPreco}")
-	@Transactional
-	public void atualizarPrecoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
-			@PathVariable String preco, @PathVariable Integer idfilial, @PathVariable Integer replicarPreco) {
+                // System.out.println("busca o metodo de mulfilial" + filial);
+                todos = repository.buscarTodosPorFilial(data1, data2, filial);
+            }
+        }
 
-		LocalDateTime agora = LocalDateTime.now();
+        return ResponseEntity.ok(todos);
+    }
 
-		// System.out.println(idfamilia);
 
-		filiais = filialRepository.findAll();
-		int size = filiais.size();
 
-		if (size == 1) {
+    /*
+     * EXECUTA A ATUALIZACAO DE PREÇOS NA TABELA PRODUTO NO CAMPO PREÇO ..... METODO
+     * FINAL
+     */
+    @PutMapping("/produtos/precificar/{idproduto}/{idfamilia}/{preco}/{idfilial}/{replicarPreco}")
+    @Transactional
+    public void atualizarPrecoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
+                                      @PathVariable String preco, @PathVariable Integer idfilial, @PathVariable Integer replicarPreco) {
 
-			if (idproduto > 0) {
+        LocalDateTime agora = LocalDateTime.now();
 
-				BigDecimal novoPreco = new BigDecimal(preco);
+        // System.out.println(idfamilia);
 
-				if (idfamilia > 0) {
+        filiais = filialRepository.findAll();
+        int size = filiais.size();
 
-					produtosRpository.updatePrecoProdutoFamilia(idfamilia, novoPreco, agora);
+        if (size == 1) {
 
-				} else {
+            if (idproduto > 0) {
 
-					produtosRpository.updatePrecoProduto(idproduto, novoPreco, agora);
+                BigDecimal novoPreco = new BigDecimal(preco);
 
-				}
+                if (idfamilia > 0) {
 
-			}
+                    produtosRpository.updatePrecoProdutoFamilia(idfamilia, novoPreco, agora);
 
-		} else {
+                } else {
 
-			// System.out.println("atualizando formacao preco produto");
+                    produtosRpository.updatePrecoProduto(idproduto, novoPreco, agora);
 
-			if (idproduto > 0) {
+                }
 
-				BigDecimal novoPreco = new BigDecimal(preco);
+            }
 
-				if (idfamilia > 0) {
+        } else {
 
-					if (replicarPreco == 1) {
+            // System.out.println("atualizando formacao preco produto");
 
-						produtosRpository.updatePrecoFormacaoPrecoProdutoFamilia(idfamilia, novoPreco, agora);
+            if (idproduto > 0) {
 
-					} else if (replicarPreco == 0) {
-						produtosRpository.updatePrecoeENaoReplicaFormacaoPrecoProdutoFamilia(idfamilia, novoPreco,
-								agora, idfilial);
-					}
+                BigDecimal novoPreco = new BigDecimal(preco);
 
-				}
-				////////////////////////////////////////////// DAQUI PRA CIMA FAMILIA OK
-				////////////////////////////////////////////// /////////////////////////////////////////////////
+                if (idfamilia > 0) {
 
-				else {
-					if (replicarPreco == 1) {
+                    if (replicarPreco == 1) {
 
-						produtosRpository.updatePrecoFormacaoPrecoProduto(idproduto, novoPreco, agora);
-					}
+                        produtosRpository.updatePrecoFormacaoPrecoProdutoFamilia(idfamilia, novoPreco, agora);
 
-					else if (replicarPreco == 0) {
-						// System.out.println("atualiza sem familia e nao replica");
-						produtosRpository.updatePrecoENaoReplicaFormacaoPrecoProduto(idproduto, novoPreco, agora,
-								idfilial);
-					}
-				}
+                    } else if (replicarPreco == 0) {
+                        produtosRpository.updatePrecoeENaoReplicaFormacaoPrecoProdutoFamilia(idfamilia, novoPreco,
+                                agora, idfilial);
+                    }
 
-			}
+                }
+                ////////////////////////////////////////////// DAQUI PRA CIMA FAMILIA OK
+                ////////////////////////////////////////////// /////////////////////////////////////////////////
 
-		}
-	}
-	
-	
-	/* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO na tabela de produtos --- TEMPORARIO */
-	@PutMapping("/produtos/precificar/agenda/produto/{idfilial}/{idproduto}/{idfamilia}/{preco}/{dataagendada_string}/{nomeUsuario}")
-	@Transactional
-	public void atualizarPrecoAgendadoProduto2(@PathVariable Integer idfilial,@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
-			@PathVariable String preco, @PathVariable String dataagendada_string , @PathVariable String nomeUsuario) {
+                else {
+                    if (replicarPreco == 1) {
 
-		LocalDate dataagendada = LocalDate.parse(dataagendada_string);
+                        produtosRpository.updatePrecoFormacaoPrecoProduto(idproduto, novoPreco, agora);
+                    } else if (replicarPreco == 0) {
+                        // System.out.println("atualiza sem familia e nao replica");
+                        produtosRpository.updatePrecoENaoReplicaFormacaoPrecoProduto(idproduto, novoPreco, agora,
+                                idfilial);
+                    }
+                }
 
-		BigDecimal novoPreco = new BigDecimal(preco);
+            }
 
-		if (idfamilia == 0) {
+        }
+    }
 
-			produtosRpository.updateDataAgendadaItemProduto(idproduto, novoPreco, dataagendada, nomeUsuario,idfilial);
 
-		} else {
-			
-			produtosRpository.updateDataAgendadaItemProdutoFamilia( novoPreco, dataagendada, idfamilia, nomeUsuario,idfilial);
-		}
+    /* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO na tabela de produtos --- TEMPORARIO */
+    @PutMapping("/produtos/precificar/agenda/produto/{idfilial}/{idproduto}/{idfamilia}/{preco}/{dataagendada_string}/{nomeUsuario}")
+    @Transactional
+    public void atualizarPrecoAgendadoProduto2(@PathVariable Integer idfilial, @PathVariable Integer idproduto, @PathVariable Integer idfamilia,
+                                               @PathVariable String preco, @PathVariable String dataagendada_string, @PathVariable String nomeUsuario) {
 
-	}
+        LocalDate dataagendada = LocalDate.parse(dataagendada_string);
 
-	/* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO --- TEMPORARIO */
-	@PutMapping("/produtos/precificar/agenda/{idproduto}/{idfamilia}/{idNota}/{preco}/{dataagendada_string}/{nomeUsuario}")
-	@Transactional
-	public void atualizarPrecoAgendadoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
-			@PathVariable String preco, @PathVariable String dataagendada_string, @PathVariable Integer idNota , @PathVariable String nomeUsuario) {
 
-		LocalDate dataagendada = LocalDate.parse(dataagendada_string);
+        BigDecimal novoPreco = new BigDecimal(preco);
 
-		LocalDateTime dataInclusao = LocalDateTime.now();
+        if (idfamilia == 0) {
 
+            produtosRpository.updateDataAgendadaItemProduto(idproduto, novoPreco, dataagendada, nomeUsuario, idfilial);
 
-		BigDecimal novoPreco = new BigDecimal(preco);
+        } else {
 
-		if (idfamilia == 0) {
+            produtosRpository.updateDataAgendadaItemProdutoFamilia(novoPreco, dataagendada, idfamilia, nomeUsuario, idfilial);
+        }
 
-			produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario,dataInclusao);
+    }
 
-		} else {
-			
-			produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario,dataInclusao);
-		}
+    /* EXECUTA A ATUIALIZCAO DE PREÇO NO CAMPO DOKS_PRECO_AGENDADO --- TEMPORARIO */
+    @PutMapping("/produtos/precificar/agenda/{idproduto}/{idfamilia}/{idNota}/{preco}/{dataagendada_string}/{nomeUsuario}")
+    @Transactional
+    public void atualizarPrecoAgendadoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
+                                              @PathVariable String preco, @PathVariable String dataagendada_string, @PathVariable Integer idNota, @PathVariable String nomeUsuario) {
 
-	}
+        LocalDate dataagendada = LocalDate.parse(dataagendada_string);
 
-	///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
-	/* atualiza tabela produto coluna preço */
-	@GetMapping("/produtos/precificar/{dataI}/{dataF}/{filial}/{modoPesquisa}")
-	public ResponseEntity<List<PrecificacaoItem>> todosDoks(@PathVariable String dataI, @PathVariable String dataF,
-			@PathVariable Integer filial, @PathVariable String modoPesquisa) {
+        LocalDateTime dataInclusao = LocalDateTime.now();
 
-		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
-				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-				.optionalStart()
-				.appendLiteral(" GMT")
-				.appendOffset("+HH:mm", "Z")
-				.optionalEnd()
-				.toFormatter();
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
-		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+        BigDecimal novoPreco = new BigDecimal(preco);
 
+        if (idfamilia == 0) {
 
+            produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario, dataInclusao);
 
+        } else {
 
-		Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
+            produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario, dataInclusao);
+        }
 
-		filiais = filialRepository.findAll();
-		int size = filiais.size();
+    }
 
-		if (size == 1) {
+    ///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
+    /* atualiza tabela produto coluna preço */
+    @GetMapping("/produtos/precificar/{dataI}/{dataF}/{filial}/{modoPesquisa}")
+    public ResponseEntity<List<PrecificacaoItem>> todosDoks(@PathVariable String dataI, @PathVariable String dataF,
+                                                            @PathVariable Integer filial, @PathVariable String modoPesquisa) {
 
-			// System.out.println(filial);
-			todos = repository.buscarTodosPrecificar(data1, data2 , modoPesquisaInteger);
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                .optionalStart()
+                .appendLiteral(" GMT")
+                .appendOffset("+HH:mm", "Z")
+                .optionalEnd()
+                .toFormatter();
 
-		} else {
+        LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+        LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
 
-			if (filial == 0) {
 
-				todos = repository.buscarTodosPrecificarComFilial(data1, data2, modoPesquisaInteger);
-				// System.out.println(filial + "igual a zero");
+        Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
 
-			} else {
+        filiais = filialRepository.findAll();
+        int size = filiais.size();
 
-				// System.out.println("busca o metodo de mulfilial" + filial);
-				todos = repository.buscarTodosPorFilialPrecificar(data1, data2, filial, modoPesquisaInteger);
-			}
-		}
+        if (size == 1) {
 
-		return ResponseEntity.ok(todos);
-	}
-	
-	
-///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
-	/* atualiza tabela produto coluna preço */
-	@GetMapping("/produtos/precificar/produto/{dataI}/{dataF}/{filial}/{modoPesquisa}")
-	public ResponseEntity<List<FormacaoPrecoProduto>> todosProdutoDoks(@PathVariable String dataI, @PathVariable String dataF,
-			@PathVariable Integer filial, @PathVariable String modoPesquisa) {
+            // System.out.println(filial);
+            todos = repository.buscarTodosPrecificar(data1, data2, modoPesquisaInteger);
 
-		DateTimeFormatter dtf = new DateTimeFormatterBuilder()
-				.append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-				.optionalStart()
-				.appendLiteral(" GMT")
-				.appendOffset("+HH:mm", "Z")
-				.optionalEnd()
-				.toFormatter();
+        } else {
 
-		LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
-		LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+            if (filial == 0) {
 
+                todos = repository.buscarTodosPrecificarComFilial(data1, data2, modoPesquisaInteger);
+                // System.out.println(filial + "igual a zero");
 
+            } else {
 
+                // System.out.println("busca o metodo de mulfilial" + filial);
+                todos = repository.buscarTodosPorFilialPrecificar(data1, data2, filial, modoPesquisaInteger);
+            }
+        }
 
-		Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
+        return ResponseEntity.ok(todos);
+    }
 
-		filiais = filialRepository.findAll();
-		int size = filiais.size();
+    ///// PRECIFICAR BUSCA PELA DATA AGENDADA DO ITEM //////////////
+    /* atualiza tabela produto coluna preço */
+    @GetMapping("/produtos/precificar/produto/{dataI}/{dataF}/{filial}/{modoPesquisa}")
+    public ResponseEntity<List<FormacaoPrecoProduto>> todosProdutoDoks(@PathVariable String dataI, @PathVariable String dataF,
+                                                                       @PathVariable Integer filial, @PathVariable String modoPesquisa) {
 
-		if (size == 1) {
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                .optionalStart()
+                .appendLiteral(" GMT")
+                .appendOffset("+HH:mm", "Z")
+                .optionalEnd()
+                .toFormatter();
 
-			// System.out.println(filial);
-			todos = repository.buscarTodosPrecificar(data1, data2, modoPesquisaInteger);
+        LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+        LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
 
-		} else {
 
-			if (filial == 0) {
+        Integer modoPesquisaInteger = Integer.parseInt(modoPesquisa);
 
-				todos2 = formacaoPrecoProdutoRepository.buscarTodosPrecificarProdutoComFilial(data1, data2);
-				// System.out.println(filial + "igual a zero");
 
-			} else {
+        if (filial == 0) {
 
-				// System.out.println("busca o metodo de mulfilial" + filial);
-				todos2 = formacaoPrecoProdutoRepository.buscarTodosPorFilialPrecificar(data1, data2, filial);
-			}
-		}
+            todos2 = formacaoPrecoProdutoRepository.buscarTodosPrecificarProdutoComFilial(data1, data2, modoPesquisaInteger);
+            // System.out.println(filial + "igual a zero");
 
-		return ResponseEntity.ok(todos2);
-	}
-	
-	
-	@PutMapping("/notaId/{notaId}/status/{status}")
-	@Transactional
-	public void atualizaStatusNotaPrecificado(@PathVariable Integer notaId , @PathVariable Boolean status) {
-		
-		
-		notaFiscalRepository.atualizarStatusPrecificacao(notaId, status);
-		
-		
-		
-	}
+        } else {
+
+            // System.out.println("busca o metodo de mulfilial" + filial);
+            todos2 = formacaoPrecoProdutoRepository.buscarTodosPorFilialPrecificar(data1, data2, filial, modoPesquisaInteger);
+        }
+
+
+        return ResponseEntity.ok(todos2);
+    }
+
+
+    @PutMapping("/notaId/{notaId}/status/{status}")
+    @Transactional
+    public void atualizaStatusNotaPrecificado(@PathVariable Integer notaId, @PathVariable Boolean status) {
+
+
+        notaFiscalRepository.atualizarStatusPrecificacao(notaId, status);
+
+
+    }
+
+
+    @PutMapping("/revisado/{id}/{status}")
+    @Transactional
+    public void atualizaStatusRevisado(@PathVariable Integer id, @PathVariable Boolean status) {
+
+
+        notaFiscalRepository.atualizarNotaFiscalItemStatusRevisado(id, status);
+
+
+    }
 
 }

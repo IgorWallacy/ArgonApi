@@ -82,6 +82,7 @@ public class FormacaoPrecoProduto {
 	
 	@Column(name="doks_usuario_nome_agendado")
 	private String usuarioAgendado;
+
 	
 	
 
@@ -312,6 +313,10 @@ public class FormacaoPrecoProduto {
 	public void setIdfamilia(Integer idfamilia) {
 		this.idfamilia = idfamilia;
 	}
+
+
+
+
 
 	@Override
 	public int hashCode() {

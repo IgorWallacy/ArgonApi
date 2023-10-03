@@ -74,18 +74,18 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	void updateDataAgendadaItemNota (Integer id , BigDecimal preco, LocalDate dataagendada, Integer notafiscalId, String nomeUsuario, LocalDateTime dataInclusao);
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value="update formacaoprecoproduto set doks_preco_agendado = ?2, doks_data_agendada = ?3, doks_usuario_nome_agendado=?4,doks_data_inclusao=?6 where formacaoprecoproduto.idproduto = ?1 and idfilial=?5 " ,nativeQuery = true)
+	@Query(value="update formacaoprecoproduto set doks_preco_agendado = ?2, doks_data_agendada = ?3, doks_usuario_nome_agendado=?4 where formacaoprecoproduto.idproduto = ?1 and idfilial=?5 " ,nativeQuery = true)
 	void updateDataAgendadaItemProduto(Integer idproduto, BigDecimal novoPreco, LocalDate dataagendada,
-			String nomeUsuario, Integer idfilial);
+									   String nomeUsuario, Integer idfilial);
 	
 	@Modifying(clearAutomatically = true)
-	@Query(value="update notafiscalitem set doks_preco_agendado = ?1 , doks_data_agendada =?2, doks_usuario_nome_agendado=?5 from produto where notafiscalitem.idproduto = produto.id and produto.idfamilia = ?3 and idnotafiscal = ?4" ,nativeQuery = true)
+	@Query(value="update notafiscalitem set doks_preco_agendado = ?1 , doks_data_agendada =?2, doks_usuario_nome_agendado=?5, doks_data_inclusao=?6 from produto where notafiscalitem.idproduto = produto.id and produto.idfamilia = ?3 and idnotafiscal = ?4" ,nativeQuery = true)
 	void updateDataAgendadaItemNotaFamilia (BigDecimal preco, LocalDate dataagendada, Integer idfamilia, Integer notafiscalId, String nomeUsuario, LocalDateTime dataInclusao);
 	
 	@Modifying(clearAutomatically = true)
 	@Query(value="update formacaoprecoproduto set doks_preco_agendado = ?1 , doks_data_agendada =?2, doks_usuario_nome_agendado=?4  from produto where produto.id=formacaoprecoproduto.idproduto and produto.idfamilia = ?3 and idfilial =?5 " ,nativeQuery = true)
-	void updateDataAgendadaItemProdutoFamilia( BigDecimal novoPreco, LocalDate dataagendada, Integer idfamilia,
-			String nomeUsuario, Integer idfilial);
+	void updateDataAgendadaItemProdutoFamilia(BigDecimal novoPreco, LocalDate dataagendada, Integer idfamilia,
+											  String nomeUsuario, Integer idfilial);
 
 	
 	@Modifying(clearAutomatically = true)

@@ -91,6 +91,10 @@ public class PrecificacaoItem {
 	private String cfop;
 	@Column(name="doks_data_inclusao")
 	private LocalDateTime dataInclusao;
+
+
+	@Column(name="doks_revisado", columnDefinition = "bit default 0")
+	private Boolean revisado;
 	
 	public Boolean getPrecificado() {
 		return precificado;
@@ -260,12 +264,16 @@ public class PrecificacaoItem {
 	public void setNomeFilial(String nomeFilial) {
 		this.nomeFilial = nomeFilial;
 	}
-	
-	
-    
 
 
-	
+	public Boolean getRevisado() {
+		return revisado;
+	}
+
+	public void setRevisado(Boolean revisado) {
+		this.revisado = revisado;
+	}
+
 	public LocalDate getDataagendada() {
 		return dataagendada;
 	}

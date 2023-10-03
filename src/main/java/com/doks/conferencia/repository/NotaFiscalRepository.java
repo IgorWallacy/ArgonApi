@@ -21,4 +21,9 @@ public interface NotaFiscalRepository extends JpaRepository<NotaFiscal, Integer>
 	@Query (value = "update notafiscal set doks_precificado=?2 where id = ?1" , nativeQuery = true)
 	void atualizarStatusPrecificacao(Integer notaId, Boolean status);
 
+	@Modifying(clearAutomatically = true)
+	@Query (value = "update notafiscalitem set doks_revisado=?2 where id=?1" , nativeQuery = true)
+	void atualizarNotaFiscalItemStatusRevisado(Integer id, Boolean status);
+
+
 }

@@ -52,10 +52,11 @@ public class PedidoCompraResource {
 		 
 		LocalDate now = LocalDate.now();
 
-		
+
 		
 		PedidoCompra pedidoSalvo = new PedidoCompra();
 
+		pedidoSalvo.setCodigo(pedidoSalvo.getId());
 		pedidoSalvo.setFornecedor(pedido.getFornecedor());
 		pedido.setDataEmissao(now);
 
@@ -81,7 +82,7 @@ public class PedidoCompraResource {
 		pedidoSalvo.setIdproduto(pedido.getIdproduto());
 		pedidoSalvo.setIdpedido(pedido.getIdpedido());
 		pedidoSalvo.setUnidadeCompra(pedido.getUnidadeCompra());
-		pedidoSalvo.setFilial(pedido.getFilial());
+		//pedidoSalvo.setFilial(pedido.getFilial());
 		
 		
 		pedidoSalvo = repositoryItem.save(pedido);

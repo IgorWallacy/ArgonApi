@@ -31,6 +31,8 @@ public class NotaFiscalItem {
 	private String usuarioAgendado;
 	@Column(name="doks_data_inclusao")
 	private LocalDateTime dataInclusao;
+	@Column(name=" doks_revisado")
+	private Boolean revisaod;
 
 	public LocalDateTime getDataInclusao() {
 		return dataInclusao;
@@ -72,6 +74,14 @@ public class NotaFiscalItem {
 
 	public void setUsuarioAgendado(String usuarioAgendado) {
 		this.usuarioAgendado = usuarioAgendado;
+	}
+
+	public Boolean getRevisaod() {
+		return revisaod;
+	}
+
+	public void setRevisaod(Boolean revisaod) {
+		this.revisaod = revisaod;
 	}
 
 	@Override

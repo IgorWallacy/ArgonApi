@@ -189,14 +189,14 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"	INNER JOIN filial ON filial.ID = formacaoprecoproduto.idfilial\n" +
 			"	INNER JOIN hierarquia t7 ON (t7.ID = produto.idhierarquia) \n" +
 			"  INNER JOIN unidademedida on unidademedida.id = produto.idunidademedida	\n" +
-			"	\n" +
-			"WHERE\n" +
-			"	produto.inativo = '0' \n" +
-			" and formacaoprecoproduto.doks_data_agendada BETWEEN ?1 AND ?2 "+
-			" ORDER BY\n" +
+			"	\n"
+			+ " WHERE\r\n"
+			+ "	formacaoprecoproduto.doks_data_agendada BETWEEN ?1 AND ?2  \r\n"
+			+ " and produto.inativo = '0' "
+			+ " ORDER BY\n" +
 			"	produto.nome ASC\n" +
 			"	", nativeQuery = true)
-	List<FormacaoPrecoProduto> buscarTodosPrecificarProdutoComFilial(LocalDateTime data1, LocalDateTime data2);
+	List<FormacaoPrecoProduto> buscarTodosPrecificarProdutoComFilial(LocalDateTime data1, LocalDateTime data2, Integer modoPesquisaInteger);
 
 
 	@Query(value = "SELECT\n" +
@@ -235,15 +235,16 @@ public interface FormacaoPrecoProdutoRepository extends JpaRepository<FormacaoPr
 			"	INNER JOIN produto ON formacaoprecoproduto.idproduto = produto.id\n" +
 			"	INNER JOIN filial ON filial.ID = formacaoprecoproduto.idfilial\n" +
 			"	INNER JOIN hierarquia t7 ON (t7.ID = produto.idhierarquia) \n" +
-			"  INNER JOIN unidademedida on unidademedida.id = produto.idunidademedida	\n" +
-			"	\n" +
-			"WHERE\n" +
-			"	produto.inativo = '0' \n" +
-			" and formacaoprecoproduto.idfilial =?3 "+
-			" and formacaoprecoproduto.doks_data_agendada BETWEEN ?1 AND ?2 "+
-			" ORDER BY\n" +
+			"  INNER JOIN unidademedida on unidademedida.id = produto.idunidademedida	\n"
+
+			+ " WHERE\r\n"
+			+ "	formacaoprecoproduto.doks_data_agendada BETWEEN ?1 AND ?2  \r\n"
+			+"     and produto.inativo = '0' \n"
+			+" and formacaoprecoproduto.idfilial =?3 "
+
+			+" ORDER BY\n" +
 			"	produto.nome ASC\n" +
 			"	", nativeQuery = true)
-	List<FormacaoPrecoProduto> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial);
+	List<FormacaoPrecoProduto> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial, Integer modoPesquisaInteger);
 
 }

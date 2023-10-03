@@ -17,7 +17,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "doks_pedidocompra_item")
+@Table(name = "pedidocompraitem")
 public class PedidoItemCompra {
 	
 	@Id
@@ -43,12 +43,14 @@ public class PedidoItemCompra {
 	
 	@Column(name="quantidade")
 	private BigDecimal quantidade;
-	
+
+	/*
 	@ManyToOne
 	@JoinColumn(name = "filial", nullable = false)
 	@NotNull
 	private Filial filial;
-	
+	*/
+
 	@Column(name="doks_quantidade1")
 	private BigDecimal quantidade1;
 	
@@ -219,13 +221,7 @@ public class PedidoItemCompra {
 		this.fatorConversao = fatorConversao;
 	}
 
-	public Filial getFilial() {
-		return filial;
-	}
 
-	public void setFilial(Filial filial) {
-		this.filial = filial;
-	}
 
 
 
