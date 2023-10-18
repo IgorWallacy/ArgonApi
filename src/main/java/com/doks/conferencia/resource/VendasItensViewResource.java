@@ -31,7 +31,7 @@ public class VendasItensViewResource {
 		 
 		
 		
-		return ResponseEntity.ok(repository.getVendasBI( dataInicial , dataFinal, modocusto));
+		return ResponseEntity.ok(repository.getVendasBIGroup( dataInicial , dataFinal, modocusto));
 	}
 	
 }
