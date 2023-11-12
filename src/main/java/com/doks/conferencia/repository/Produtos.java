@@ -123,4 +123,9 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 
 	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto where produto.inativo = '0' and produto.idfamilia=?1 " , nativeQuery = true)
 	List<Produto> buscarProdutosFamilia(Integer id);
+
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto where produto.inativo = '0' and produto.idhierarquia=?1 order by produto.nome asc " , nativeQuery = true)
+	List<Produto> buscarProdutosGrupo(int i);
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join produtoean on (produto.id=produtoean.idproduto) where produto.inativo = '0' and produto.ean=?1 or produtoean.ean=?1 or produto.codigo =?1  limit 1 " , nativeQuery = true)
+	Produto buscarProdutosporEan(String ean);
 }

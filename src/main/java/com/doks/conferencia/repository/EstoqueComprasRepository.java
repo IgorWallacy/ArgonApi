@@ -103,13 +103,13 @@ public interface EstoqueComprasRepository extends JpaRepository<EstoqueCompras, 
 	
 	@Query( value = " select distinct formacaoprecoproduto.id as id, filial.nome as nomefilial, produto.codigo as codigoproduto, "
 			+ "produto.nome as nomeproduto,"
-			+ "produto.unidademedida as unvenda,"
-			+ "(select notafiscalitem.unidade  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2 order by notafiscal.id desc limit 1  ) as codigounidademedida, "
+			+ "MAX(produto.unidademedida) as unvenda,"
+			+ "MAX((select notafiscalitem.unidade  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2 order by notafiscal.id desc limit 1  )) as codigounidademedida, "
 			+ " entidade.nome as nomefornecedor,"
-			+ "(select sum(notafiscalitem.total)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  ) as total,"
-			+ "(select saldoestoque_por_produto_filial(produto.id,filial.id) ) as quantidadesaldoestoque,"
-			+ "(select avg(notafiscalitem.embalagem)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  ) as quantidadeembalagem,"
-			+ "(0) as numeronf,"
+			+ "SUM((select sum(notafiscalitem.total)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  )) as total,"
+			+ "AVG((select saldoestoque_por_produto_filial(produto.id,filial.id) )) as quantidadesaldoestoque,"
+			+ "AVG((select avg(notafiscalitem.embalagem)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  )) as quantidadeembalagem,"
+			+ "SUM((0)) as numeronf,"
 			+ "( SELECT "
 			+ "					numeronfultcomprat3.numeronotafiscal "
 			+ "				FROM"
@@ -129,7 +129,7 @@ public interface EstoqueComprasRepository extends JpaRepository<EstoqueCompras, 
 			+ "					numeronfultcomprat1.datahora DESC "
 			+ "					LIMIT 1 "
 			+ ")   as numeronfultcompra,"
-			+ "( select condicaopagamento.descricao from notafiscal left join condicaopagamento on (condicaopagamento.id=notafiscal.idcondicaopagto) where numeronotafiscal  = (SELECT "
+			+ "MAX(( select condicaopagamento.descricao from notafiscal left join condicaopagamento on (condicaopagamento.id=notafiscal.idcondicaopagto) where numeronotafiscal  = (SELECT "
 			+ "											numeronfultcomprat3.numeronotafiscal "
 			+ "										FROM"
 			+ "											movimentoestoque numeronfultcomprat1"
@@ -146,20 +146,21 @@ public interface EstoqueComprasRepository extends JpaRepository<EstoqueCompras, 
 			+ "											AND numeronfultcomprat4.consideravenda = 1 "
 			+ "										ORDER BY"
 			+ "											numeronfultcomprat1.datahora DESC "
-			+ "											LIMIT 1) limit 1) as condicaopagamento,"
+			+ "											LIMIT 1) limit 1)) as condicaopagamento,"
 			+ "formacaoprecoproduto.precoultimacompra as precoultimacompra,"
-			+ "(select sum(notafiscalitem.quantidade * notafiscalitem.embalagem )  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  ) as quantidadecompra,"
-			+ "(select sum(vendas_itens_view.quantidade) from vendas_itens_view where vendas_itens_view.filial = filial.codigo and vendas_itens_view.produto = produto.codigo and vendas_itens_view.emissao between ?3 and ?4) as quantidadevendida,"
-			+ "(select avg(notafiscalitem.precocusto)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  ) as precocusto,"
+			+ "SUM((select sum(notafiscalitem.quantidade * notafiscalitem.embalagem )  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  )) as quantidadecompra,"
+			+ "SUM((select sum(vendas_itens_view.quantidade) from vendas_itens_view where vendas_itens_view.filial = filial.codigo and vendas_itens_view.produto = produto.codigo and vendas_itens_view.emissao between ?3 and ?4)) as quantidadevendida,"
+			+ "AVG((select avg(notafiscalitem.precocusto)  from notafiscalitem left join notafiscal on (notafiscal.id = notafiscalitem.idnotafiscal) where notafiscalitem.idproduto = produto.id and notafiscal.tipodocumento = 'E' and notafiscal.idfilial = filial.id and notafiscal.emissao >= ?1 and notafiscal.emissao <= ?2  )) as precocusto,"
 			+ "(null) as data_emissao"
 			+ " from formacaoprecoproduto left join produto on (produto.id = formacaoprecoproduto.idproduto)"
 			+ " left join filial on ( formacaoprecoproduto.idfilial = filial.id)"
 			+ " left join entidade on (produto.idfornecedor = entidade.id)"
-			+ " left join produtofornecedor on (produtofornecedor.idproduto = formacaoprecoproduto.idproduto) "
-			+ " where produto.inativo = '0' and produtofornecedor.idfornecedor  = ?5 "
+			+ " left join hierarquia on (hierarquia.id = produto.idhierarquia) "
+			+ " where produto.inativo = '0' and hierarquia.codigo LIKE ?5% "
+			+ " group by formacaoprecoproduto.id,nomefilial,codigoproduto,nomeproduto,nomefornecedor,data_emissao,numeronfultcompra,formacaoprecoproduto.precoultimacompra"
 			
 			,nativeQuery = true)
-	List<EstoqueCompras> porDataProdutoEmpresa(LocalDate dataIC, LocalDate dataFC, LocalDate dataIV, LocalDate dataFV, Integer fornecedor);
+	List<EstoqueCompras> porDataProdutoEmpresa(LocalDate dataIC, LocalDate dataFC, LocalDate dataIV, LocalDate dataFV, String grupo);
 
 	
 	

@@ -12,7 +12,7 @@ import com.doks.conferencia.model.Hierarquia;
 public interface GruposRepository extends JpaRepository<Hierarquia, Integer> {
 
 	
-	@Query(value = " select h.id,h.codigo,h.nome,h.doks_meta, (( SELECT hq.nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( h.codigo FROM 0 FOR 7 ) )) as doks_grupo_pai, (( SELECT hq.nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( h.codigo FROM 1 FOR 12 ) )) as doks_grupo_filho from hierarquia h order by nome asc", nativeQuery = true)
+	@Query(value = " select h.id,h.codigo,h.nome,h.doks_meta, (( SELECT hq.nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( h.codigo FROM 0 FOR 7 ) )) as doks_grupo_pai, (( SELECT hq.nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( h.codigo FROM 1 FOR 12 ) )) as doks_grupo_filho from hierarquia h order by codigo asc", nativeQuery = true)
 	List<Hierarquia> todos();
 	
 	@Modifying(clearAutomatically = true)

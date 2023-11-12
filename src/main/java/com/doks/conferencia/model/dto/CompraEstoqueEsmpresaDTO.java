@@ -6,6 +6,8 @@ public class CompraEstoqueEsmpresaDTO {
 	
 	
 	private Integer fornecedor;
+
+	private String grupo;
 	
 	private LocalDate dataInicialCompra;
 	
@@ -54,7 +56,12 @@ public class CompraEstoqueEsmpresaDTO {
 	public void setDataFinalVenda(LocalDate dataFinalVenda) {
 		this.dataFinalVenda = dataFinalVenda;
 	}
-	
-	
 
+	public String getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
+	}
 }

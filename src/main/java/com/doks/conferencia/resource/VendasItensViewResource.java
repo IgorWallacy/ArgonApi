@@ -33,5 +33,17 @@ public class VendasItensViewResource {
 		
 		return ResponseEntity.ok(repository.getVendasBIGroup( dataInicial , dataFinal, modocusto));
 	}
+	@GetMapping("/bi/sync/{dataI}/{dataF}/{modocusto}")
+	private ResponseEntity<List<VendasItensView>> vendasSync(@PathVariable String dataI, @PathVariable String dataF, @PathVariable Integer modocusto) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
+
+		LocalDate dataInicial = LocalDate.parse(dataI, formatter);
+		LocalDate dataFinal = LocalDate.parse(dataF, formatter);
+
+
+
+		return ResponseEntity.ok(repository.getVendasBI( dataInicial , dataFinal, modocusto));
+	}
 	
 }

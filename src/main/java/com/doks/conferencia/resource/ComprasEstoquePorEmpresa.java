@@ -26,7 +26,7 @@ public class ComprasEstoquePorEmpresa {
 	
 		
 		
-		return ResponseEntity.ok(repository.porDataProdutoEmpresa(data.getDataInicialCompra(), data.getDataFinalCompra(), data.getDataInicialVenda() , data.getDataFinalVenda() , data.getFornecedor() ));
+		return ResponseEntity.ok(repository.porDataProdutoEmpresa(data.getDataInicialCompra(), data.getDataFinalCompra(), data.getDataInicialVenda() , data.getDataFinalVenda() , data.getGrupo() ));
 		
 		
 	}

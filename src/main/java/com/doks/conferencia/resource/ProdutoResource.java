@@ -24,11 +24,24 @@ public class ProdutoResource {
 	
 	@Autowired
 	private Produtos produtos;
-	
+
+	@GetMapping("/ean/{ean}")
+	public Produto getProdutoEan (@PathVariable String ean) {
+
+		return produtos.buscarProdutosporEan(ean);
+	}
+
+
 	@GetMapping("/familia/{id}")
 	public List<Produto> getProdutoFamilia (@PathVariable String id) {
 
 		return produtos.buscarProdutosFamilia(Integer.parseInt(id));
+	}
+
+	@GetMapping("/grupo/{id}")
+	public List<Produto> getProdutoGrupo (@PathVariable String id) {
+
+		return produtos.buscarProdutosGrupo(Integer.parseInt(id));
 	}
 	
 	@GetMapping
