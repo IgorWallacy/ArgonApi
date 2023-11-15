@@ -38,7 +38,9 @@ public class ProdutoContagemResource {
     @GetMapping("/inventarios/{id}")
     public ResponseEntity<Optional<ProdutoContagemInventario>> buscarInventariosPorId (@PathVariable String id) {
 
-        return ResponseEntity.ok(produtoContagemInventarioRepository.findById(Long.parseLong(id)));
+        Integer idInt = Integer.parseInt(id);
+
+        return ResponseEntity.ok(produtoContagemInventarioRepository.findById(Long.valueOf(idInt)));
     }
 
 

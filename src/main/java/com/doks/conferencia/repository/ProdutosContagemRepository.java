@@ -23,14 +23,9 @@ public interface ProdutosContagemRepository extends JpaRepository<ProdutoContage
             "	SUM ( doks_produto_contagem.quantidade_lida ) AS quantidade_lida,\n" +
             "   MAX ( ( select SUM(quantidade) from vendas_itens_view where vendas_itens_view.produto = produto.codigo and vendas_itens_view.filial = filial.codigo and vendas_itens_view.datahoraemissao between doks_produto_contagem_inventario.inicio and doks_produto_contagem_inventario.fim )  ) as quantidade_vendida_durante,    "+
             "	doks_produto_contagem.nome_usuario,\n" +
-            "	AVG(( COALESCE( doks_produto_contagem.quantidade_estoque, (SELECT saldoestoque_por_produto_filial ( doks_produto_contagem.idproduto, doks_produto_contagem.idfilial )) ))) AS quantidade_estoque,\n" +
-            "	(\n" +
-            "	CASE\n" +
-            "			\n" +
-            "			WHEN AVG(COALESCE(doks_produto_contagem.quantidade_estoque , ( SELECT saldoestoque_por_produto_filial ( doks_produto_contagem.idproduto, doks_produto_contagem.idfilial ) ))) <= 0 THEN\n" +
-            "			SUM ( doks_produto_contagem.quantidade_lida ) + ( SELECT MAX  ( COALESCE (doks_produto_contagem.quantidade_estoque,saldoestoque_por_produto_filial ( doks_produto_contagem.idproduto, doks_produto_contagem.idfilial  ) ) ) ) ELSE SUM ( doks_produto_contagem.quantidade_lida ) - ( SELECT MAX ( COALESCE (doks_produto_contagem.quantidade_estoque,saldoestoque_por_produto_filial ( doks_produto_contagem.idproduto, doks_produto_contagem.idfilial ) ) ) ) \n" +
-            "		END \n" +
-            "		) AS divergencia \n" +
+            "	AVG(doks_produto_contagem.quantidade_estoque) AS quantidade_estoque,\n" +
+
+            "   MAX ( CASE WHEN  doks_produto_contagem.quantidade_estoque >= 0 THEN  doks_produto_contagem.quantidade_estoque - doks_produto_contagem.quantidade_lida ELSE doks_produto_contagem.quantidade_lida - doks_produto_contagem.quantidade_estoque end   ) AS divergencia \n" +
             "	FROM\n" +
             "		doks_produto_contagem\n" +
             "		LEFT JOIN filial ON ( filial.ID = idfilial )\n" +

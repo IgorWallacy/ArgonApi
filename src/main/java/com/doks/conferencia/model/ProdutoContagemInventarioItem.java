@@ -35,7 +35,8 @@ public class ProdutoContagemInventarioItem {
     @NotNull(message = "A Quantidade não pode ser nula")
     @Column(name="quantidade_lida",columnDefinition="Decimal(10,3) default '100.000'" )
     private Double quantidadeLida;
-    @Column(name="quantidade_estoque",columnDefinition="Decimal(10,3) default '100.000'")
+
+    @Column(name="quantidade_estoque",columnDefinition="Decimal(10,3) default '100.000'" )
     private Double quantidadeEstoque;
 
     @Column(name="quantidade_vendida_durante",columnDefinition="Decimal(10,3) default '100.000'")
