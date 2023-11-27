@@ -12,9 +12,11 @@ public class ProdutoContagemInventarioItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+   @NotNull(message = "O produto não pode ser nulo")
     @Column(name="idproduto")
     private Integer idproduto;
 
+   @NotNull(message = "O id do inventario esta nulo")
     @Column(name="idinventario")
     private Long idinventario;
     @NotNull(message = "Produto não pode ser nulo")
