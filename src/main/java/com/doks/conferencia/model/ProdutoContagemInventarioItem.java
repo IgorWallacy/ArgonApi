@@ -32,6 +32,7 @@ public class ProdutoContagemInventarioItem {
     private String codigo;
     @Column(name="loja")
     private String loja;
+   @NotNull(message = "o id da filial nao pode ser nulo")
     @Column(name="idfilial")
     private Integer idfilial;
     @NotNull(message = "A Quantidade não pode ser nula")

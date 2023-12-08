@@ -1,6 +1,7 @@
 package com.doks.conferencia.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,10 +11,12 @@ public class ProdutoContagemInventario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotNull(message = "Informe o id da filial")
     @Column(name = "idfilial")
     private Integer idfilial;
     @Column(name = "nome")
     private String nome;
+
 
     private String loja;
 
