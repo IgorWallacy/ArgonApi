@@ -18,6 +18,8 @@ public class TabelaPrecoPainel {
 	
 	private String  descricao;
 
+	private String nome;
+
 	public Integer getId() {
 		return id;
 	}
@@ -32,6 +34,14 @@ public class TabelaPrecoPainel {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	@Override

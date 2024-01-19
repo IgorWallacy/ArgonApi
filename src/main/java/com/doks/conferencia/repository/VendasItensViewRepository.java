@@ -41,6 +41,7 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"   left join entidade  t11 on (t11.id = t2.idfornecedor) "+
 
 			" where " +
+			" t1.status = '3' and " +
 			"  t1.tipoitem='P' AND "+
 			"	t1.emissao BETWEEN ?1 \n" +
 			"	AND  ?2" +
@@ -82,6 +83,7 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"   left join entidade  t11 on (t11.id = t2.idfornecedor) "+
 
 			" where " +
+			" t1.status = '3' and "+
 			"  t1.tipoitem='P' AND "+
 			"	t1.emissao BETWEEN ?1 \n" +
 			"	AND  ?2" +

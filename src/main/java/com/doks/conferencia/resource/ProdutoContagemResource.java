@@ -4,11 +4,13 @@ import com.doks.conferencia.model.ProdutoContagemInventario;
 import com.doks.conferencia.model.ProdutoContagemInventarioItem;
 import com.doks.conferencia.repository.ProdutoContagemInventarioRepository;
 import com.doks.conferencia.repository.ProdutosContagemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,18 @@ public class ProdutoContagemResource {
     @GetMapping("/inventarios")
     public  ResponseEntity<List<ProdutoContagemInventario>> buscarInventarios () {
 
+
+
         return ResponseEntity.ok(produtoContagemInventarioRepository.buscarInventarios());
+    }
+
+    @GetMapping("/inventarios/porData/{inicio}")
+    public  ResponseEntity<List<ProdutoContagemInventario>> buscarInventarios (@PathVariable String inicio) {
+
+        LocalDate i = LocalDate.parse(inicio);
+
+
+        return ResponseEntity.ok(produtoContagemInventarioRepository.buscarInventariosPorData(i));
     }
 
     @GetMapping("/inventarios/{id}")
@@ -54,6 +67,11 @@ public class ProdutoContagemResource {
     public ResponseEntity<List<ProdutoContagemInventarioItem>> buscarMobile (@PathVariable String id) {
         Integer i = Integer.parseInt(id);
         return ResponseEntity.ok(repository.buscarItensMobile(i.longValue()));
+    }
+    @GetMapping("/porInventario/mobile/{id}/{rows}")
+    public ResponseEntity<List<ProdutoContagemInventarioItem>> buscarMobileRows (@PathVariable String id , @PathVariable Integer rows) {
+        Integer i = Integer.parseInt(id);
+        return ResponseEntity.ok(repository.buscarItensMobileRows(i.longValue() , rows ) );
     }
     @Transactional
     @PutMapping("/inventario/finalizar/{id}")

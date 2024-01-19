@@ -22,7 +22,7 @@ public interface ProdutosContagemRepository extends JpaRepository<ProdutoContage
             "   MAX (doks_produto_contagem.entrada) as entrada , " +
             "	SUM ( doks_produto_contagem.quantidade_lida ) AS quantidade_lida,\n" +
             "   MAX ( ( select SUM(quantidade) from vendas_itens_view where vendas_itens_view.produto = produto.codigo and vendas_itens_view.filial = filial.codigo and vendas_itens_view.datahoraemissao between doks_produto_contagem_inventario.inicio and doks_produto_contagem_inventario.fim )  ) as quantidade_vendida_durante,    "+
-            "	doks_produto_contagem.nome_usuario,\n" +
+            "	MAX(doks_produto_contagem.nome_usuario) as nome_usuario ,\n" +
             "	AVG(doks_produto_contagem.quantidade_estoque) AS quantidade_estoque,\n" +
 
             "   MAX ( CASE WHEN  doks_produto_contagem.quantidade_estoque >= 0 THEN  doks_produto_contagem.quantidade_estoque - doks_produto_contagem.quantidade_lida ELSE doks_produto_contagem.quantidade_lida - doks_produto_contagem.quantidade_estoque end   ) AS divergencia \n" +
@@ -36,16 +36,18 @@ public interface ProdutosContagemRepository extends JpaRepository<ProdutoContage
             "		doks_produto_contagem.idinventario = ?1 \n" +
             "	GROUP BY\n" +
             "		doks_produto_contagem.idproduto,\n" +
-            "		doks_produto_contagem.idfilial,\n" +
-            "		doks_produto_contagem.nome_usuario \n" +
+            "		doks_produto_contagem.idfilial\n" +
+
 
             "ORDER BY\n" +
             "	produto asc ", nativeQuery = true)
     List<ProdutoContagemInventarioItem> buscarProdutoContagem(Long id);
 
-    @Query(value="select doks_produto_contagem.id, produto.codigo as codigo, doks_produto_contagem.entrada, (case when produto.ean ='' then produto.codigo else produto.ean end) as ean ,doks_produto_contagem.idproduto, doks_produto_contagem.idfilial , unidademedida.codigo as unidade_medida,   doks_produto_contagem.idinventario, (0) as loja, doks_produto_contagem.nome_usuario, doks_produto_contagem.produto, (0) as quantidade_estoque, doks_produto_contagem.divergencia, doks_produto_contagem.quantidade_lida , doks_produto_contagem.quantidade_vendida_durante from doks_produto_contagem left join produto on(produto.id =doks_produto_contagem.idproduto) left join unidademedida on (unidademedida.id=produto.idunidademedida) where doks_produto_contagem.idinventario=?1 order by doks_produto_contagem.id desc  ", nativeQuery = true)
+    @Query(value="select doks_produto_contagem.id, produto.codigo as codigo, doks_produto_contagem.entrada, (case when produto.ean ='' then produto.codigo else produto.ean end) as ean ,doks_produto_contagem.idproduto, doks_produto_contagem.idfilial , unidademedida.codigo as unidade_medida,   doks_produto_contagem.idinventario, (0) as loja, doks_produto_contagem.nome_usuario, doks_produto_contagem.produto, (0) as quantidade_estoque, doks_produto_contagem.divergencia, doks_produto_contagem.quantidade_lida , doks_produto_contagem.quantidade_vendida_durante from doks_produto_contagem left join produto on(produto.id =doks_produto_contagem.idproduto) left join unidademedida on (unidademedida.id=produto.idunidademedida) where doks_produto_contagem.idinventario=?1 order by doks_produto_contagem.id desc ", nativeQuery = true)
     List<ProdutoContagemInventarioItem> buscarItensMobile (Long id);
 
+    @Query(value="select doks_produto_contagem.id, produto.codigo as codigo, doks_produto_contagem.entrada, (case when produto.ean ='' then produto.codigo else produto.ean end) as ean ,doks_produto_contagem.idproduto, doks_produto_contagem.idfilial , unidademedida.codigo as unidade_medida,   doks_produto_contagem.idinventario, (0) as loja, doks_produto_contagem.nome_usuario, doks_produto_contagem.produto, (0) as quantidade_estoque, doks_produto_contagem.divergencia, doks_produto_contagem.quantidade_lida , doks_produto_contagem.quantidade_vendida_durante from doks_produto_contagem left join produto on(produto.id =doks_produto_contagem.idproduto) left join unidademedida on (unidademedida.id=produto.idunidademedida) where doks_produto_contagem.idinventario=?1 order by doks_produto_contagem.id desc  limit ?2", nativeQuery = true)
+    List<ProdutoContagemInventarioItem> buscarItensMobileRows (Long id, Integer rows);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "delete from doks_produto_contagem where doks_produto_contagem.id=?1", nativeQuery = true)

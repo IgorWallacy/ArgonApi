@@ -1,5 +1,7 @@
 package com.doks.conferencia.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -17,7 +19,8 @@ public class VendasPorHora {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer iddocumento;
-	
+
+	//@JsonFormat(pattern = "HH:MM")
 	private LocalDateTime horaInicial;
 	
 	

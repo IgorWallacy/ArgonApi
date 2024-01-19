@@ -31,7 +31,7 @@ public interface TicketMedioRepository extends JpaRepository<TicketMedio, BigDec
 			+ "    t1.emissao\r\n"
 			+ "ORDER BY\r\n"
 			+ "    filial.nome,\r\n"
-			+ "    t1.emissao" , nativeQuery = true)
+			+ "    t1.emissao " , nativeQuery = true)
 	List<TicketMedio> buscar(LocalDate data1, LocalDate data2);
 
 }
