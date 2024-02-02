@@ -48,6 +48,9 @@ public class ProdutoContagemInventarioItem {
    @Column(name = "divergencia")
    private BigDecimal divergencia;
 
+   @Column(name="recontar")
+   private Boolean recontar;
+
     @Column(name="nome_usuario")
     private String nomeUsuario;
 
@@ -172,6 +175,14 @@ public class ProdutoContagemInventarioItem {
 
     public void setEntrada(LocalDateTime entrada) {
         this.entrada = entrada;
+    }
+
+    public Boolean getRecontar() {
+        return recontar;
+    }
+
+    public void setRecontar(Boolean recontar) {
+        this.recontar = recontar;
     }
 
     @Override

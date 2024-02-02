@@ -1,6 +1,7 @@
 package com.doks.conferencia.repository;
 
 import com.doks.conferencia.model.ResumoVendas;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long> {
     @Query(value ="SELECT \n" +
-            "    (1) AS id,\n" +
+            "   filial.id AS id,\n" +
             "    (\n" +
             "        SELECT COUNT(cancelado) \n" +
             "                FROM operacao \n" +
@@ -47,13 +48,7 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "            AND operacao.filial = ?3 "+
             "    ) AS quantidade_cupom,\n" +
             "    (\n" +
-            "        SELECT SUM(total) \n" +
-            "        FROM vendas_itens_view \n" +
-            "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 \n" +
-            "            AND vendas_itens_view.status = '3' \n" +
-            "            AND vendas_itens_view.tipoitem = 'P'\n" +
-            "            AND vendas_itens_view.filial =?3 "+
-            "    ) AS venda_liquida,\n" +
+            "      0) AS venda_liquida,\n" +
             "    (SELECT \n" +
             "\t SUM(COALESCE(t3.descontoitem,t2.descontosubtotal)) as desconto \n" +
             "FROM\n" +
@@ -73,14 +68,14 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "            AND vendas_itens_view.tipoitem = 'P'\n" +
             "            AND vendas_itens_view.filial =?3 "+
             "    ) AS venda_bruta\n" +
-            "FROM vendas_itens_view  \n" +
-            "WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 limit 1;\n"
+            "FROM filial  \n" +
+            "WHERE filial.id='1' limit 1;\n"
             , nativeQuery = true)
 
     List<ResumoVendas> buscarResumoFilial(LocalDate data1, LocalDate data2, String loja);
 
     @Query(value ="SELECT \n" +
-            "    (1) AS id,\n" +
+            "    filial.id AS id,\n" +
             "    (\n" +
             "        SELECT COUNT(cancelado) \n" +
             "                FROM operacao \n" +
@@ -117,14 +112,7 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "            AND operacao.tipo IN (-1, 1, 31)\n" +
 
             "    ) AS quantidade_cupom,\n" +
-            "    (\n" +
-            "        SELECT SUM(total) \n" +
-            "        FROM vendas_itens_view \n" +
-            "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 \n" +
-            "            AND vendas_itens_view.status = '3' \n" +
-            "            AND vendas_itens_view.tipoitem = 'P'\n" +
-
-            "    ) AS venda_liquida,\n" +
+            "    ( 0  ) AS venda_liquida,\n" +
             "    (SELECT \n" +
             "\t SUM(COALESCE(t3.descontoitem,t2.descontosubtotal)) as desconto \n" +
             "FROM\n" +
@@ -144,8 +132,9 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "            AND vendas_itens_view.tipoitem = 'P'\n" +
 
             "    ) AS venda_bruta\n" +
-            "FROM vendas_itens_view  \n" +
-            "WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 limit 1;\n"
+            "FROM filial  \n" +
+            "WHERE filial.id='1' limit 1;\n"
             , nativeQuery = true)
+
     List<ResumoVendas> buscarResumo(LocalDate data1, LocalDate data2);
 }

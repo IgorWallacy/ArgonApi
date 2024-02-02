@@ -18,7 +18,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 				.antMatchers("/Lote/**").permitAll().antMatchers("/api_public/**").permitAll().antMatchers("/oauth/**")
 				.permitAll().antMatchers("/api/**").authenticated().antMatchers("/api_bi/**").authenticated()
-
+				.antMatchers("/api/recebimento/**").authenticated().antMatchers("/api_vga/**").authenticated()
 				.antMatchers("/api_vendas/**").authenticated().antMatchers("/api_vga/**").authenticated()
 				.antMatchers("/api/pedido/**").authenticated()
 

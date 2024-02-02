@@ -73,6 +73,13 @@ public class ProdutoContagemResource {
         Integer i = Integer.parseInt(id);
         return ResponseEntity.ok(repository.buscarItensMobileRows(i.longValue() , rows ) );
     }
+
+    @GetMapping("/porInventario/mobile/recontar/{id}")
+    public ResponseEntity<List<ProdutoContagemInventarioItem>> buscarMobileRecontar (@PathVariable String id ) {
+
+        return ResponseEntity.ok(repository.buscarItensMobileRecontar(Integer.parseInt(id)) );
+    }
+
     @Transactional
     @PutMapping("/inventario/finalizar/{id}")
     public void finalizarInventario (@PathVariable String id) {
@@ -93,6 +100,18 @@ public class ProdutoContagemResource {
         produtoContagemInventarioRepository.reabrir(Long.parseLong(id) );
 
         repository.descongelarEstoque(Long.parseLong(id));
+
+    }
+
+    @Transactional
+    @PutMapping("/recontar/item/{id}/inventario/{idInventario}")
+    public void recontarItem (@PathVariable Integer id , @PathVariable Integer idInventario) {
+
+
+
+        repository.marcarRecontagem(id , idInventario);
+
+
 
     }
     @PostMapping("/salvar")
@@ -120,5 +139,7 @@ public class ProdutoContagemResource {
 
         repository.deleteByIdProduto(Long.valueOf(id));
     }
+
+
 
 }
