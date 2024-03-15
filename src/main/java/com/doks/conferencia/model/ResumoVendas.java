@@ -12,7 +12,11 @@ public class ResumoVendas {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private BigDecimal quantidade_itens_vendidos;
+
     private BigDecimal quantidade_cupom;
+
+    private BigDecimal valor_devolucao;
 
     private BigDecimal quantidade_cupom_cancelado;
 
@@ -98,6 +102,22 @@ public class ResumoVendas {
 
     public void setDescontos(BigDecimal descontos) {
         this.descontos = descontos;
+    }
+
+    public BigDecimal getValor_devolucao() {
+        return valor_devolucao;
+    }
+
+    public void setValor_devolucao(BigDecimal valor_devolucao) {
+        this.valor_devolucao = valor_devolucao;
+    }
+
+    public BigDecimal getQuantidade_itens_vendidos() {
+        return quantidade_itens_vendidos;
+    }
+
+    public void setQuantidade_itens_vendidos(BigDecimal quantidade_itens_vendidos) {
+        this.quantidade_itens_vendidos = quantidade_itens_vendidos;
     }
 
     @Override

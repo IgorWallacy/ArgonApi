@@ -3,26 +3,19 @@ package com.doks.conferencia.resource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+
+import com.doks.conferencia.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.doks.conferencia.model.Filial;
-import com.doks.conferencia.model.FormacaoPrecoProduto;
-import com.doks.conferencia.model.PrecificacaoItem;
 import com.doks.conferencia.repository.FilialRepository;
 import com.doks.conferencia.repository.FormacaoPrecoProdutoRepository;
 import com.doks.conferencia.repository.NotaFiscalRepository;
@@ -35,6 +28,8 @@ public class PrecificacaoResource {
 
     @Autowired
     private PrecificacaoRepository repository;
+
+
 
     @Autowired
     private Produtos produtosRpository;
@@ -54,6 +49,31 @@ public class PrecificacaoResource {
 
     @Autowired
     private FormacaoPrecoProdutoRepository formacaoPrecoProdutoRepository;
+
+    @GetMapping("/produtos/pendentes/{dataI}/{dataF}/{modoPesquisa}")
+    public ResponseEntity<List<PrecificacaoItem>> produtosPendentesDePrecificacao (@PathVariable String dataI, @PathVariable String dataF , @PathVariable Integer modoPesquisa) {
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                .optionalStart()
+                .appendLiteral(" GMT")
+                .appendOffset("+HH:mm", "Z")
+                .optionalEnd()
+                .toFormatter();
+
+        LocalDateTime data1 = LocalDateTime.parse(dataI, dtf);
+        LocalDateTime data2 = LocalDateTime.parse(dataF, dtf);
+
+        filiais = filialRepository.findAll();
+        int size = filiais.size();
+
+        if (size == 1) {
+
+            return ResponseEntity.ok(repository.buscartodosPendentesFilial(data1, data2, modoPesquisa));
+        }
+        else {
+            return ResponseEntity.ok(repository.buscartodosPendentes(data1, data2, modoPesquisa));
+        }
+    }
 
 
     /*****************************************************************************
@@ -109,16 +129,18 @@ public class PrecificacaoResource {
      * EXECUTA A ATUALIZACAO DE PREÇOS NA TABELA PRODUTO NO CAMPO PREÇO ..... METODO
      * FINAL
      */
-    @PutMapping("/produtos/precificar/{idproduto}/{idfamilia}/{preco}/{idfilial}/{replicarPreco}")
+    @PutMapping("/produtos/precificar/{idproduto}/{idfamilia}/{preco}/{idfilial}/{replicarPreco}/{usuario}")
     @Transactional
     public void atualizarPrecoProduto(@PathVariable Integer idproduto, @PathVariable Integer idfamilia,
-                                      @PathVariable String preco, @PathVariable Integer idfilial, @PathVariable Integer replicarPreco) {
+                                      @PathVariable String preco, @PathVariable Integer idfilial, @PathVariable Integer replicarPreco, @PathVariable Integer usuario , @RequestBody PrecificacaoItem produtos) {
 
         LocalDateTime agora = LocalDateTime.now();
 
-        // System.out.println(idfamilia);
+
+
 
         filiais = filialRepository.findAll();
+
         int size = filiais.size();
 
         if (size == 1) {
@@ -130,10 +152,12 @@ public class PrecificacaoResource {
                 if (idfamilia > 0) {
 
                     produtosRpository.updatePrecoProdutoFamilia(idfamilia, novoPreco, agora);
+                    produtosRpository.insertHistoricoPreco(idproduto,novoPreco,agora,idfilial , usuario, produtos.getPrecoAtual());
 
                 } else {
 
                     produtosRpository.updatePrecoProduto(idproduto, novoPreco, agora);
+                    produtosRpository.insertHistoricoPreco(idproduto,novoPreco,agora,idfilial , usuario , produtos.getPrecoAtual());
 
                 }
 
@@ -152,24 +176,32 @@ public class PrecificacaoResource {
                     if (replicarPreco == 1) {
 
                         produtosRpository.updatePrecoFormacaoPrecoProdutoFamilia(idfamilia, novoPreco, agora);
+                        filiais.forEach(filial -> {
+                            produtosRpository.insertHistoricoPreco(idproduto,novoPreco,agora,filial.getId() , usuario, produtos.getPrecoAtual());
+                        });
 
                     } else if (replicarPreco == 0) {
                         produtosRpository.updatePrecoeENaoReplicaFormacaoPrecoProdutoFamilia(idfamilia, novoPreco,
                                 agora, idfilial);
+                        produtosRpository.insertHistoricoPreco(idproduto,novoPreco,agora,idfilial , usuario, produtos.getPrecoAtual());
+
                     }
 
                 }
-                ////////////////////////////////////////////// DAQUI PRA CIMA FAMILIA OK
-                ////////////////////////////////////////////// /////////////////////////////////////////////////
+
 
                 else {
                     if (replicarPreco == 1) {
 
                         produtosRpository.updatePrecoFormacaoPrecoProduto(idproduto, novoPreco, agora);
+                        filiais.forEach(filial -> {
+                            produtosRpository.insertHistoricoPreco(idproduto,novoPreco,agora,filial.getId() , usuario, produtos.getPrecoAtual());
+                        });
                     } else if (replicarPreco == 0) {
                         // System.out.println("atualiza sem familia e nao replica");
                         produtosRpository.updatePrecoENaoReplicaFormacaoPrecoProduto(idproduto, novoPreco, agora,
                                 idfilial);
+                        produtosRpository.insertHistoricoPreco(idproduto, novoPreco, agora , idfilial , usuario, produtos.getPrecoAtual());
                     }
                 }
 

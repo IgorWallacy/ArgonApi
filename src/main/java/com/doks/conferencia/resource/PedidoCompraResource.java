@@ -3,9 +3,11 @@ package com.doks.conferencia.resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import com.doks.conferencia.model.dto.ProdutoCompraDTO;
+import com.doks.conferencia.repository.ProdutoCompraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,16 @@ import com.doks.conferencia.model.PedidoItemCompra;
 import com.doks.conferencia.repository.PedidoCompraRepository;
 import com.doks.conferencia.repository.PedidoItemCompraRepository;
 
+import javax.persistence.criteria.Order;
+
 @RestController
 @RequestMapping("/api/pedido/compra")
 public class PedidoCompraResource {
 
 	@Autowired
 	private PedidoItemCompraRepository repositoryItem;
+	@Autowired
+	private ProdutoCompraRepository produtoCompraRepository;
 
 	@Autowired
 	private PedidoCompraRepository repository;
@@ -34,68 +40,51 @@ public class PedidoCompraResource {
 
 	// private List<PedidoItemCompra> pedidos = new ArrayList<PedidoItemCompra>();
 	
+	@GetMapping("/produtos/{idfilial}")
+	public ResponseEntity<List<ProdutoCompraDTO>> produtos (@PathVariable Integer idfilial) {
+		
+		return ResponseEntity.ok(produtoCompraRepository.todosProdutos(idfilial));
+	}
+
 	@GetMapping("/todos")
 	public ResponseEntity<List<PedidoCompra>> todos () {
-		
-		return ResponseEntity.ok(repository.findAll());
+
+		return ResponseEntity.ok(repository.findAll(Sort.by(Sort.Direction.DESC, "id")));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<PedidoCompra>> porIdPedido (@PathVariable Integer id) {
-		
-		return ResponseEntity.ok(repository.findById(id));
+	public ResponseEntity<PedidoCompra> porIdPedido (@PathVariable Integer id) {
+
+		return ResponseEntity.ok(repository.porId(id));
 	}
 	
 
 	@PostMapping("/salvar")
 	public ResponseEntity<PedidoCompra> salvar(@RequestBody PedidoCompra pedido) {
 		 
-		LocalDate now = LocalDate.now();
 
 
 		
-		PedidoCompra pedidoSalvo = new PedidoCompra();
-
-		pedidoSalvo.setCodigo(pedidoSalvo.getId());
-		pedidoSalvo.setFornecedor(pedido.getFornecedor());
-		pedido.setDataEmissao(now);
-
-		
-	
-		
-		pedidoSalvo = repository.save(pedido);
-
-		
-		return ResponseEntity.ok(pedidoSalvo);
+		return ResponseEntity.ok(repository.save(pedido));
 	}
 
 	@PostMapping("/salvar/{idPedido}")
 	public ResponseEntity<PedidoItemCompra> salvarItem(@RequestBody PedidoItemCompra pedido,
 			@PathVariable Integer idPedido) {
 
-	//	System.out.println(pedido.getId());
-
-		PedidoItemCompra pedidoSalvo = new PedidoItemCompra();
 
 		
-		
-		pedidoSalvo.setIdproduto(pedido.getIdproduto());
-		pedidoSalvo.setIdpedido(pedido.getIdpedido());
-		pedidoSalvo.setUnidadeCompra(pedido.getUnidadeCompra());
-		//pedidoSalvo.setFilial(pedido.getFilial());
-		
-		
-		pedidoSalvo = repositoryItem.save(pedido);
+		repositoryItem.save(pedido);
 
-		return ResponseEntity.ok(pedidoSalvo);
+		return ResponseEntity.ok(pedido);
 	}
 
 	@GetMapping("/itens/pedidoId/{idPedido}")
 	public ResponseEntity<List<PedidoItemCompra>> getItemPedido(@PathVariable Integer idPedido) {
 
-		itemPedidoList = repositoryItem.findByIdPedido(idPedido);
 
-		return ResponseEntity.ok(itemPedidoList);
+
+		return ResponseEntity.ok(repositoryItem.findByIdPedidoCompra(idPedido));
 
 	}
 	
@@ -139,7 +128,7 @@ public class PedidoCompraResource {
 		
 		 PedidoCompra item = repository.porId(id);
 		
-		 List<PedidoItemCompra> ic = repositoryItem.findByIdPedido(id);
+		 List<PedidoItemCompra> ic = repositoryItem.findByIdPedidoCompra(id);
 		 
 		 for (PedidoItemCompra pedidoItemCompra : ic) {
 		

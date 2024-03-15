@@ -24,4 +24,11 @@ public class EntidadeResource {
 		
 	}
 
+	@GetMapping("/compradores")
+	public List<Entidade> compradores () {
+
+		return repository.compradores();
+
+	}
+
 }

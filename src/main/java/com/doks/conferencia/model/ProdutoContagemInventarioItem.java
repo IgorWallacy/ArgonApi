@@ -47,7 +47,7 @@ public class ProdutoContagemInventarioItem {
 
    @Column(name = "divergencia")
    private BigDecimal divergencia;
-
+   @NotNull(message = "Não foi informado a coluna recontar! Verifique se existe atualizações pendentes na playstore")
    @Column(name="recontar")
    private Boolean recontar;
 

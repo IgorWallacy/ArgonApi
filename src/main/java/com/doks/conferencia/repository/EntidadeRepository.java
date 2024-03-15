@@ -12,4 +12,7 @@ public interface EntidadeRepository extends JpaRepository<Entidade, Integer> {
 	@Query( value = "select id,codigo,nome,razaosocial,fornecedor,cnpjcpf,leadtimecompra from entidade where fornecedor = 1 and inativo = 0 order by nome asc", nativeQuery = true)
 	public List<Entidade> fornecedores();
 
+	@Query( value = "select id,codigo,nome,razaosocial,fornecedor,cnpjcpf,leadtimecompra from entidade where comprador = 1 and inativo = 0 order by nome asc", nativeQuery = true)
+	public List<Entidade> compradores();
+
 }

@@ -5,11 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.doks.conferencia.model.PrecificacaoItem;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, Integer> {
 
@@ -333,5 +331,111 @@ public interface PrecificacaoRepository extends JpaRepository<PrecificacaoItem, 
             + "	notafiscalitem.doks_data_inclusao ASC", nativeQuery = true)
     List<PrecificacaoItem> buscarTodosPorFilialPrecificar(LocalDateTime data1, LocalDateTime data2, Integer filial, Integer modoPesquisa);
 
+    @Query(value = "SELECT distinct \r\n"
+            + " notafiscalitem.id,"
+            + "	notafiscal.idfilial, \r\n"
+            + "	notafiscal.numeronotafiscal, \r\n"
+            + "	notafiscal.id as idnotafiscal, \r\n"
+            + "	notafiscal.razaosocial, \r\n"
+            + " notafiscal.datainclusao as entradasaida, "
+            + " notafiscal.doks_precificado as doks_precificado, "
+            + " notafiscalitem.doks_revisado as doks_revisado, "
+            + "	notafiscalitem.precounitario, \r\n"
+            + "	notafiscalitem.cfop, \r\n"
+            + "	notafiscalitem.descricao, \r\n"
+            + "	( ( notafiscalitem.custototal / ( notafiscalitem.quantidade * notafiscalitem.embalagem)) )  as precocusto, \r\n"
+            + "	formacaoprecoproduto.preco as precoatual, \r\n"
+            + " notafiscalitem.doks_data_agendada as dataagendada, "
+            + " notafiscalitem.doks_preco_agendado as precoagendado, "
+            + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
+            + " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado,"
+            + " produto.ean as ean, "
+            + " produto.idfamilia as idfamilia,"
+            + " produto.percentualmarkupminimo as percentualmarkup,"
+            + " produto.lucrobrutominimo as percentualmarkdown,"
+            + " produto.codigo as codigo, "
+            + " produto.id as idproduto, "
+            + " (select pp.valor from promocao pr join promocaoproduto pp on pr.id=pp.idpromocao where pp.idproduto=produto.id and pr.datainicial <= CURRENT_DATE and pr.datafinal>= CURRENT_DATE limit 1) as precopromocional, "
+            + " (select pf.valor from promocao pr join promocaofamilia pf on pr.id=pf.idpromocao where pf.idfamilia=produto.idfamilia and pr.datainicial<=CURRENT_DATE and pr.datafinal>=CURRENT_DATE limit 1) as precopromocionalfamilia, "
+            + " filial.nome "
+            + " FROM\r\n"
+            + "	notafiscal\r\n"
+            + "	INNER JOIN\r\n"
+            + "	notafiscalitem\r\n"
+            + "	ON \r\n"
+            + "		notafiscal.\"id\" = notafiscalitem.idnotafiscal\r\n"
+            + "	INNER JOIN\r\n"
+            + "	produto\r\n"
+            + "	ON \r\n"
+            + "		notafiscalitem.idproduto = produto.\"id\"\r\n"
+            + " INNER JOIN filial on notafiscal.idfilial = filial.id "
+            + " INNER JOIN formacaoprecoproduto on formacaoprecoproduto.idproduto = notafiscalitem.idproduto "
 
+
+            + " WHERE CASE "
+            + "    WHEN ?3 = 0 THEN "
+            + "    notafiscalitem.doks_data_agendada BETWEEN ?1 AND ?2 "
+            + "    ELSE"
+            + "    notafiscalitem.doks_data_inclusao BETWEEN ?1 AND ?2"
+            + "    END"
+            + " and notafiscal.tipodocumento= 'E' "
+            + " and formacaoprecoproduto.idfilial = filial.id "
+            + " and formacaoprecoproduto.preco != notafiscalitem.doks_preco_agendado "
+            + "ORDER BY\r\n"
+            + "	notafiscalitem.doks_data_inclusao ASC", nativeQuery = true)
+            List<PrecificacaoItem> buscartodosPendentes(LocalDateTime dataI, LocalDateTime dataF , Integer modoPesquisa);
+
+    @Query(value = "SELECT distinct \r\n"
+            + " notafiscalitem.id,"
+            + "	notafiscal.idfilial, \r\n"
+            + "	notafiscal.numeronotafiscal, \r\n"
+            + "	notafiscal.id as idnotafiscal, \r\n"
+            + "	notafiscal.razaosocial, \r\n"
+            + " notafiscal.datainclusao as entradasaida, "
+            + " notafiscal.doks_precificado as doks_precificado, "
+            + " notafiscalitem.doks_revisado as doks_revisado, "
+            + "	notafiscalitem.precounitario, \r\n"
+            + "	notafiscalitem.cfop, \r\n"
+            + "	notafiscalitem.descricao, \r\n"
+            + "	( ( notafiscalitem.custototal / ( notafiscalitem.quantidade * notafiscalitem.embalagem)) )  as precocusto, \r\n"
+            + "	produto.preco as precoatual, \r\n"
+            + " notafiscalitem.doks_data_agendada as dataagendada, "
+            + " notafiscalitem.doks_preco_agendado as precoagendado, "
+            + " notafiscalitem.doks_data_inclusao as doks_data_inclusao, "
+            + " notafiscalitem.doks_usuario_nome_agendado as usuario_agendado,"
+            + " produto.ean as ean, "
+            + " produto.idfamilia as idfamilia,"
+            + " produto.percentualmarkupminimo as percentualmarkup,"
+            + " produto.lucrobrutominimo as percentualmarkdown,"
+            + " produto.codigo as codigo, "
+            + " produto.id as idproduto, "
+            + " (select pp.valor from promocao pr join promocaoproduto pp on pr.id=pp.idpromocao where pp.idproduto=produto.id and pr.datainicial <= CURRENT_DATE and pr.datafinal>= CURRENT_DATE limit 1) as precopromocional, "
+            + " (select pf.valor from promocao pr join promocaofamilia pf on pr.id=pf.idpromocao where pf.idfamilia=produto.idfamilia and pr.datainicial<=CURRENT_DATE and pr.datafinal>=CURRENT_DATE limit 1) as precopromocionalfamilia, "
+            + " filial.nome "
+            + " FROM\r\n"
+            + "	notafiscal\r\n"
+            + "	INNER JOIN\r\n"
+            + "	notafiscalitem\r\n"
+            + "	ON \r\n"
+            + "		notafiscal.\"id\" = notafiscalitem.idnotafiscal\r\n"
+            + "	INNER JOIN\r\n"
+            + "	produto\r\n"
+            + "	ON \r\n"
+            + "		notafiscalitem.idproduto = produto.\"id\"\r\n"
+            + " INNER JOIN filial on notafiscal.idfilial = filial.id "
+
+
+
+            + " WHERE CASE "
+            + "    WHEN ?3 = 0 THEN "
+            + "    notafiscalitem.doks_data_agendada BETWEEN ?1 AND ?2 "
+            + "    ELSE"
+            + "    notafiscalitem.doks_data_inclusao BETWEEN ?1 AND ?2"
+            + "    END"
+            + " and notafiscal.tipodocumento= 'E' "
+
+            + " and produto.preco != notafiscalitem.doks_preco_agendado "
+            + "ORDER BY\r\n"
+            + "	notafiscalitem.doks_data_inclusao ASC", nativeQuery = true)
+    List<PrecificacaoItem> buscartodosPendentesFilial(LocalDateTime data1, LocalDateTime data2, Integer modoPesquisa);
 }

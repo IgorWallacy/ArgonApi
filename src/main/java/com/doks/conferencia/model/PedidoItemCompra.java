@@ -1,6 +1,7 @@
 package com.doks.conferencia.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 
 import javax.persistence.Column;
@@ -19,28 +20,30 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "pedidocompraitem")
 public class PedidoItemCompra {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	
+
+
 	private Integer embalagem;
-	
+
+
 	@ManyToOne
 	@JoinColumn(name = "idproduto", nullable = false)
 	@NotNull
 	private Produto idproduto;
-	
-	@ManyToOne
-	@JoinColumn(name = "idpedidocompra", nullable = false)
-	@NotNull
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private PedidoCompra idpedido;
-	
+
+
+	@Column(name = "idpedidocompra")
+	private Integer idpedido;
+
 	@Column(name="preco")
 	private BigDecimal preco;
-	
+
+	@Column(name="doks_preco_venda_na_data")
+	private BigDecimal precoVenda;
+
 	@Column(name="quantidade")
 	private BigDecimal quantidade;
 
@@ -53,16 +56,16 @@ public class PedidoItemCompra {
 
 	@Column(name="doks_quantidade1")
 	private BigDecimal quantidade1;
-	
+
 	@Column(name="doks_quantidade2")
 	private BigDecimal quantidade2;
-	
+
 	@Column(name="fatorconversao")
 	private BigDecimal fatorConversao;
-	
+
 	@Column(name="doks_quantidade_venda")
 	private BigDecimal quantidadeVenda;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "idunidademedida", nullable = false)
 	@NotNull
@@ -71,25 +74,10 @@ public class PedidoItemCompra {
 	@Column(name="total")
     private BigDecimal total;
 
-	
+
 	@Column(name="observacao" , columnDefinition="text")
 	private String observacao;
 
-	
-	
-	
-	
-	
-	
-	
-
-	public String getObservacao() {
-		return observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
 
 	public Integer getId() {
 		return id;
@@ -97,15 +85,6 @@ public class PedidoItemCompra {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-
-	public BigDecimal getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(BigDecimal quantidade) {
-		this.quantidade = quantidade;
 	}
 
 	public Integer getEmbalagem() {
@@ -116,12 +95,38 @@ public class PedidoItemCompra {
 		this.embalagem = embalagem;
 	}
 
+
+
+	public Integer getIdpedido() {
+		return idpedido;
+	}
+
+	public void setIdpedido(Integer idpedido) {
+		this.idpedido = idpedido;
+	}
+
 	public Produto getIdproduto() {
 		return idproduto;
 	}
 
 	public void setIdproduto(Produto idproduto) {
 		this.idproduto = idproduto;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public BigDecimal getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public BigDecimal getQuantidade1() {
@@ -140,6 +145,14 @@ public class PedidoItemCompra {
 		this.quantidade2 = quantidade2;
 	}
 
+	public BigDecimal getFatorConversao() {
+		return fatorConversao;
+	}
+
+	public void setFatorConversao(BigDecimal fatorConversao) {
+		this.fatorConversao = fatorConversao;
+	}
+
 	public BigDecimal getQuantidadeVenda() {
 		return quantidadeVenda;
 	}
@@ -147,12 +160,6 @@ public class PedidoItemCompra {
 	public void setQuantidadeVenda(BigDecimal quantidadeVenda) {
 		this.quantidadeVenda = quantidadeVenda;
 	}
-
-	
-	
-	
-
-	
 
 	public UnidadeMedida getUnidadeCompra() {
 		return unidadeCompra;
@@ -162,24 +169,6 @@ public class PedidoItemCompra {
 		this.unidadeCompra = unidadeCompra;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
-
-	public PedidoCompra getIdpedido() {
-		return idpedido;
-	}
-
-	public void setIdpedido(PedidoCompra idpedido) {
-		this.idpedido = idpedido;
-	}
-	
-	
-
 	public BigDecimal getTotal() {
 		return total;
 	}
@@ -188,50 +177,34 @@ public class PedidoItemCompra {
 		this.total = total;
 	}
 
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	public BigDecimal getPrecoVenda() {
+		return precoVenda;
+	}
+
+	public void setPrecoVenda(BigDecimal precoVenda) {
+		this.precoVenda = precoVenda;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		PedidoItemCompra that = (PedidoItemCompra) o;
+
+        return Objects.equals(id, that.id);
+    }
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return id != null ? id.hashCode() : 0;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedidoItemCompra other = (PedidoItemCompra) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	public BigDecimal getFatorConversao() {
-		return fatorConversao;
-	}
-
-	public void setFatorConversao(BigDecimal fatorConversao) {
-		this.fatorConversao = fatorConversao;
-	}
-
-
-
-
-
-	
-
-
-	
-
-	
-	
-	
-
 }

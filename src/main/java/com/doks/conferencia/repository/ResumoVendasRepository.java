@@ -11,6 +11,15 @@ import java.util.List;
 public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long> {
     @Query(value ="SELECT \n" +
             "   filial.id AS id,\n" +
+            " (SELECT SUM\n" +
+            "\t( t1.valor ) AS valor \n" +
+            "FROM\n" +
+            "\tdevolucao t1\n" +
+            "\tLEFT JOIN filial t2 ON ( t2.ID = t1.idfilial ) \n" +
+            "WHERE\n" +
+            "\tt2.codigo = ?3 \n" +
+            "\tAND t1.DATA >= ?1 \n" +
+            "\tAND t1.DATA <= ?2 ) as valor_devolucao,"+
             "    (\n" +
             "        SELECT COUNT(cancelado) \n" +
             "                FROM operacao \n" +
@@ -64,10 +73,18 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "        SELECT SUM(total) \n" +
             "        FROM vendas_itens_view \n" +
             "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 \n" +
-            "            AND vendas_itens_view.status = '3' \n" +
+            "           AND vendas_itens_view.modelo in ('01','2D','55','59','65','99','1','1-A','1B') \n" +
             "            AND vendas_itens_view.tipoitem = 'P'\n" +
             "            AND vendas_itens_view.filial =?3 "+
-            "    ) AS venda_bruta\n" +
+            "    ) AS venda_bruta,\n" +
+            "    (\n" +
+            "        SELECT count(id) \n" +
+            "        FROM vendas_itens_view \n" +
+            "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 \n" +
+            "            AND vendas_itens_view.modelo in ('01','2D','55','59','65','99','1','1-A','1B') \n" +
+            "            AND vendas_itens_view.tipoitem = 'P'\n" +
+            "            AND vendas_itens_view.filial =?3 "+
+            "    ) AS quantidade_itens_vendidos\n" +
             "FROM filial  \n" +
             "WHERE filial.id='1' limit 1;\n"
             , nativeQuery = true)
@@ -76,6 +93,15 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
 
     @Query(value ="SELECT \n" +
             "    filial.id AS id,\n" +
+            " (SELECT SUM\n" +
+            "\t( t1.valor ) AS valor \n" +
+            "FROM\n" +
+            "\tdevolucao t1\n" +
+            "\tLEFT JOIN filial t2 ON ( t2.ID = t1.idfilial ) \n" +
+            "WHERE\n" +
+
+            " t1.DATA >= ?1 \n" +
+            "\tAND t1.DATA <= ?2) as valor_devolucao, "+
             "    (\n" +
             "        SELECT COUNT(cancelado) \n" +
             "                FROM operacao \n" +
@@ -128,11 +154,20 @@ public interface ResumoVendasRepository extends JpaRepository<ResumoVendas,Long>
             "        SELECT SUM(total) \n" +
             "        FROM vendas_itens_view \n" +
             "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 \n" +
-            "            AND vendas_itens_view.status = '3' \n" +
+            "         AND  vendas_itens_view.modelo in ('01','2D','55','59','65','99','1','1-A','1B') \n" +
             "            AND vendas_itens_view.tipoitem = 'P'\n" +
 
-            "    ) AS venda_bruta\n" +
-            "FROM filial  \n" +
+            "    ) AS venda_bruta,\n" +
+            "    (\n" +
+            "        SELECT count(id) \n" +
+            "        FROM vendas_itens_view \n" +
+            "        WHERE vendas_itens_view.emissao BETWEEN ?1 AND ?2 " +
+            "            AND vendas_itens_view.modelo in ('01','2D','55','59','65','99','1','1-A','1B') " +
+            "            AND vendas_itens_view.tipoitem = 'P'\n" +
+
+            "    ) AS quantidade_itens_vendidos \n" +
+
+            " FROM filial  \n" +
             "WHERE filial.id='1' limit 1;\n"
             , nativeQuery = true)
 

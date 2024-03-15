@@ -31,11 +31,18 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	@Modifying(clearAutomatically = true)
 	@Query(value = "update produto set currentTimeMillis=(extract(epoch from current_timestamp)*1000), preco = ?2 , dataalteracaopreco = ?3 where id = ?1", nativeQuery = true)
 	void updatePrecoProduto(Integer id , BigDecimal preco, LocalDateTime agora);
-	
-	
-	
-	
-   /////////////////////////////////////////ATUALIZA PRECO DA TABELA FORMACAOPRECOPRODUTO ///////////////////////////////////////
+
+	@Modifying(clearAutomatically = true)
+	@Query(value = "insert into formacaoprecolog (idproduto, currentTimeMillis, precovenda , precovendaajustado, idusuario, datahora, percentuallucro, valorlucro, custoalteradopor, idfilial) values (?1, extract(epoch from current_timestamp)*1000, ?6 , ?2, ?5, ?3, '0', '0', 'Sistema JJ', ?4 )", nativeQuery = true)
+	void insertHistoricoPreco(Integer id , BigDecimal preco, LocalDateTime agora, Integer idfilial, Integer idusuario, BigDecimal precoAtual);
+
+
+
+
+
+
+
+	/////////////////////////////////////////ATUALIZA PRECO DA TABELA FORMACAOPRECOPRODUTO ///////////////////////////////////////
 	
 	@Modifying(clearAutomatically = true)
 	@Query(value = "update formacaoprecoproduto set currentTimeMillis=(extract(epoch from current_timestamp)*1000),  preco = ?2 , dataalteracaopreco = ?3 from produto where formacaoprecoproduto.idproduto = produto.id and produto.idfamilia=?1", nativeQuery = true)
@@ -128,4 +135,6 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	List<Produto> buscarProdutosGrupo(int i);
 	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join produtoean on (produto.id=produtoean.idproduto) where produto.inativo = '0' and produto.ean=?1 or produtoean.ean=?1 or produto.codigo =?1  limit 1 " , nativeQuery = true)
 	Produto buscarProdutosporEan(String ean);
+
+
 }

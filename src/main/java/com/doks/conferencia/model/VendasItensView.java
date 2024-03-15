@@ -48,6 +48,8 @@ public class VendasItensView {
 	
 	@Column(name="valor_total")
 	private BigDecimal valorTotal;
+	@Column(name="desconto")
+	private BigDecimal desconto;
 	
 	@Column(name="preco_ultima_compra")
 	private BigDecimal precoultimacompra;
@@ -67,8 +69,9 @@ public class VendasItensView {
 	@Column(name="meta")
 	private BigDecimal meta;
 	
-	@Column(name="fornecedor")
-	private String fornecedor;
+
+
+
 
 	
 
@@ -212,6 +215,14 @@ public class VendasItensView {
 		this.precoultimacompratotal = precoultimacompratotal;
 	}
 
+	public BigDecimal getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(BigDecimal desconto) {
+		this.desconto = desconto;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -229,13 +240,7 @@ public class VendasItensView {
 		return Objects.equals(id, other.id);
 	}
 
-	public String getFornecedor() {
-		return fornecedor;
-	}
 
-	public void setFornecedor(String fornecedor) {
-		this.fornecedor = fornecedor;
-	}
 
 	
 	

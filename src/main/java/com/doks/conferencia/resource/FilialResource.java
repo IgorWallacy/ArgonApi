@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.doks.conferencia.model.Filial;
 import com.doks.conferencia.repository.FilialRepository;
@@ -24,6 +22,12 @@ public class FilialResource {
 	private List<Filial> getFilial() {
 		
 		return repository.findAll(Sort.by("codigo"));
+	}
+
+	@GetMapping("/api/filial/{id}")
+	private Filial getFilialId(@PathVariable Integer id) {
+
+		return repository.porId(id);
 	}
 	
 	@GetMapping("/api_react/filial")
