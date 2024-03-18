@@ -27,6 +27,9 @@ public class VendasItensView {
 	
 	@Column(name="promocao")
 	private Integer promocao;
+
+	@Column(name="condicaopagamento")
+	private String condicaopagamento;
 	
 	@Column(name="codigo")
 	private String codigo;
@@ -45,6 +48,11 @@ public class VendasItensView {
 	
 	@Column(name="quantidade")
 	private BigDecimal quantidade;
+	@Column(name="devolucao")
+	private BigDecimal devolucao;
+
+	@Column(name="quantidade_devolvida")
+	private BigDecimal quantidadeDevolvida;
 	
 	@Column(name="valor_total")
 	private BigDecimal valorTotal;
@@ -170,8 +178,14 @@ public class VendasItensView {
 	public void setNomeFilial(String nomeFilial) {
 		this.nomeFilial = nomeFilial;
 	}
-	
-	
+
+	public String getCondicaopagamento() {
+		return condicaopagamento;
+	}
+
+	public void setCondicaopagamento(String condicaopagamento) {
+		this.condicaopagamento = condicaopagamento;
+	}
 
 	public String getPromocaoNome() {
 		return promocaoNome;
@@ -221,6 +235,22 @@ public class VendasItensView {
 
 	public void setDesconto(BigDecimal desconto) {
 		this.desconto = desconto;
+	}
+
+	public BigDecimal getDevolucao() {
+		return devolucao;
+	}
+
+	public void setDevolucao(BigDecimal devolucao) {
+		this.devolucao = devolucao;
+	}
+
+	public BigDecimal getQuantidadeDevolvida() {
+		return quantidadeDevolvida;
+	}
+
+	public void setQuantidadeDevolvida(BigDecimal quantidadeDevolvida) {
+		this.quantidadeDevolvida = quantidadeDevolvida;
 	}
 
 	@Override
