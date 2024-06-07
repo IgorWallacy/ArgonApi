@@ -22,6 +22,8 @@ public class ProdutoCompraDTO {
     private BigDecimal preco;
 
 
+
+
     public Integer getId() {
         return id;
     }
@@ -69,6 +71,7 @@ public class ProdutoCompraDTO {
     public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
+
 
     @Override
     public boolean equals(Object o) {

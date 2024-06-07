@@ -15,9 +15,11 @@
 	<name>ArgonApi</name>
 	<description>Sistema de Conferencia de entrada de mercadorias </description>
 
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
+    <properties>
+        <java.version>1.7</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
 	<dependencies>
 	

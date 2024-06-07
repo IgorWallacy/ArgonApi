@@ -41,6 +41,10 @@ public class PedidoItemCompra {
 	@Column(name="preco")
 	private BigDecimal preco;
 
+
+	@Column(name="doks_percentualmarkupminimo")
+	private BigDecimal percentualmarkupminimo;
+
 	@Column(name="doks_preco_venda_na_data")
 	private BigDecimal precoVenda;
 
@@ -191,6 +195,16 @@ public class PedidoItemCompra {
 
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
+	}
+
+
+
+	public BigDecimal getPercentualmarkupminimo() {
+		return percentualmarkupminimo;
+	}
+
+	public void setPercentualmarkupminimo(BigDecimal percentualmarkupminimo) {
+		this.percentualmarkupminimo = percentualmarkupminimo;
 	}
 
 	@Override

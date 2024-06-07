@@ -11,16 +11,11 @@ import java.util.List;
 
 
 import com.doks.conferencia.model.*;
+import com.doks.conferencia.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import com.doks.conferencia.repository.FilialRepository;
-import com.doks.conferencia.repository.FormacaoPrecoProdutoRepository;
-import com.doks.conferencia.repository.NotaFiscalRepository;
-import com.doks.conferencia.repository.PrecificacaoRepository;
-import com.doks.conferencia.repository.Produtos;
 
 @RestController()
 @RequestMapping("/api_precificacao")
@@ -39,6 +34,8 @@ public class PrecificacaoResource {
 
     @Autowired
     private FilialRepository filialRepository;
+    @Autowired
+    private DoksNotaFiscalItemPrecoAgendadoRepository doksNotaFiscalItemPrecoAgendadoRepository;
 
     private List<PrecificacaoItem> todos = new ArrayList<>();
 
@@ -246,10 +243,21 @@ public class PrecificacaoResource {
 
         BigDecimal novoPreco = new BigDecimal(preco);
 
+
+        DoksNotafiscalItemPrecoAgendado entidade = new DoksNotafiscalItemPrecoAgendado();
+
+
+        entidade.setIdproduto(idproduto);
+        entidade.setPrecoAgendado(novoPreco);
+        entidade.setDataAgendada(dataagendada);
+        entidade.setIdnotafiscal(idNota);
+        entidade.setUsuarioAgendado(nomeUsuario);
+        entidade.setDataInclusao(dataInclusao);
+
         if (idfamilia == 0) {
 
             produtosRpository.updateDataAgendadaItemNota(idproduto, novoPreco, dataagendada, idNota, nomeUsuario, dataInclusao);
-
+            doksNotaFiscalItemPrecoAgendadoRepository.save(entidade);
         } else {
 
             produtosRpository.updateDataAgendadaItemNotaFamilia(novoPreco, dataagendada, idfamilia, idNota, nomeUsuario, dataInclusao);

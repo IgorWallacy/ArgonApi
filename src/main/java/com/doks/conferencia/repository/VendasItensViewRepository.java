@@ -16,7 +16,7 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"	t1.produto AS codigo,\n" +
 			"	( SELECT nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( t7.codigo FROM 0 FOR 7 ) ) AS grupo_pai,\n" +
 			"	( SELECT nome FROM hierarquia hq WHERE hq.codigo = SUBSTRING ( t7.codigo FROM 1 FOR 12 ) ) AS grupo_filho,\n" +
-			"	t7.nome AS grupo_neto,\n" +
+			"	 t7.nome AS grupo_neto,\n" +
 			"	MAX(CONCAT(t1.produto , ' - ', t1.descricao)) AS descricao,\n" +
 			"   t1.condicaopagamento as condicaopagamento, "+
 			"	AVG(( select SUM(devolucaoitem.total) from devolucao left join devolucaoitem on (devolucaoitem.iddevolucao = devolucao.id) where devolucao.data between ?1 and ?2  and devolucaoitem.idproduto =  t2.id and devolucao.idfilial = filial.id and devolucao.status in('1','2')  )) AS devolucao,\n" +
@@ -50,7 +50,7 @@ public interface VendasItensViewRepository extends JpaRepository<VendasItensView
 			"	t1.emissao BETWEEN ?1 \n" +
 			"	AND  ?2" +
 			"	AND t1.modelo in ('01','2D','55','59','65','99','1','1-A','1B') "+
-			" GROUP BY t1.condicaopagamento,t1.produto,grupo_pai,grupo_filho,grupo_neto,descricao,codigo_filial,nome_filial, nome_promocao, promocao "
+			" GROUP BY t1.condicaopagamento,t1.produto , grupo_pai,grupo_filho,grupo_neto,codigo_filial,nome_filial, nome_promocao, promocao "
 			 , nativeQuery = true)
 	List<VendasItensView> getVendasBI(LocalDate dataInicial , LocalDate dataFinal, Integer modocusto);
 

@@ -79,7 +79,11 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	@Modifying(clearAutomatically = true)
 	@Query(value="update notafiscalitem set doks_preco_agendado = ?2, doks_data_agendada = ?3, doks_usuario_nome_agendado=?5,doks_data_inclusao=?6 where notafiscalitem.idproduto = ?1 and idnotafiscal = ?4" ,nativeQuery = true)
 	void updateDataAgendadaItemNota (Integer id , BigDecimal preco, LocalDate dataagendada, Integer notafiscalId, String nomeUsuario, LocalDateTime dataInclusao);
-	
+
+
+
+
+
 	@Modifying(clearAutomatically = true)
 	@Query(value="update formacaoprecoproduto set doks_preco_agendado = ?2, doks_data_agendada = ?3, doks_usuario_nome_agendado=?4 where formacaoprecoproduto.idproduto = ?1 and idfilial=?5 " ,nativeQuery = true)
 	void updateDataAgendadaItemProduto(Integer idproduto, BigDecimal novoPreco, LocalDate dataagendada,

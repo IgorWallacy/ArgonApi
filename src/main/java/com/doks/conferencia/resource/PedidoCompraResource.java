@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.doks.conferencia.model.Embalagem;
 import com.doks.conferencia.model.dto.ProdutoCompraDTO;
+import com.doks.conferencia.repository.EmbalagemCompraRepository;
 import com.doks.conferencia.repository.ProdutoCompraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -34,6 +36,9 @@ public class PedidoCompraResource {
 	private ProdutoCompraRepository produtoCompraRepository;
 
 	@Autowired
+	private EmbalagemCompraRepository embalagemCompraRepository;
+
+	@Autowired
 	private PedidoCompraRepository repository;
 
 	List<PedidoItemCompra> itemPedidoList = new ArrayList<PedidoItemCompra>();
@@ -46,10 +51,16 @@ public class PedidoCompraResource {
 		return ResponseEntity.ok(produtoCompraRepository.todosProdutos(idfilial));
 	}
 
+	@GetMapping("/embalagem/{idproduto}")
+	public ResponseEntity<List<Embalagem>> embalagens (@PathVariable Integer idproduto) {
+
+		return ResponseEntity.ok(embalagemCompraRepository.embalagemUltimaCompra(idproduto));
+	}
+
 	@GetMapping("/todos")
 	public ResponseEntity<List<PedidoCompra>> todos () {
 
-		return ResponseEntity.ok(repository.findAll(Sort.by(Sort.Direction.DESC, "id")));
+		return ResponseEntity.ok(repository.findAll(Sort.by("id").descending()));
 	}
 	
 	@GetMapping("/{id}")

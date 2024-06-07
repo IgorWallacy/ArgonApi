@@ -13,9 +13,9 @@ public interface ProdutoCompraRepository  extends JpaRepository<ProdutoCompraDTO
             "    produto.codigo AS codigo,\n" +
             "    produto.ean AS ean,\n" +
             "    produto.nome AS nome,\n" +
-            "    COALESCE(formacaoprecoproduto.precocusto, produto.precocusto) AS precocusto,\n" +
+            "    COALESCE(formacaoprecoproduto.custoaquisicao, produto.custoaquisicao) AS precocusto,\n" +
             "    COALESCE(formacaoprecoproduto.preco, produto.preco) AS preco\n" +
-            "FROM \n" +
+           " FROM \n" +
             "    produto\n" +
             "LEFT JOIN \n" +
             "    formacaoprecoproduto ON produto.id = formacaoprecoproduto.idproduto "+
@@ -25,4 +25,6 @@ public interface ProdutoCompraRepository  extends JpaRepository<ProdutoCompraDTO
             "ORDER BY \n" +
             "    produto.nome ASC;", nativeQuery = true)
     List<ProdutoCompraDTO> todosProdutos(Integer filial);
+
+
 }
