@@ -28,7 +28,8 @@ import javax.persistence.criteria.Order;
 
 @RestController
 @RequestMapping("/api/pedido/compra")
-public class PedidoCompraResource {
+public class
+PedidoCompraResource {
 
 	@Autowired
 	private PedidoItemCompraRepository repositoryItem;
