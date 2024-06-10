@@ -98,7 +98,7 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	void updateDataAgendadaItemProdutoFamilia(BigDecimal novoPreco, LocalDate dataagendada, Integer idfamilia,
 											  String nomeUsuario, Integer idfilial);
 
-	
+
 	@Modifying(clearAutomatically = true)
 	@Query(value="update produto set percentualmarkupminimo = ?2 where produto.id = ?1 " ,nativeQuery = true)
 	void atualizarMarkupMinimo(Integer idproduto, BigDecimal percentual);
