@@ -13,13 +13,13 @@ import com.doks.conferencia.model.Produto;
 
 public interface Produtos extends JpaRepository<Produto, Integer> {
 	
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia, idfamilia, idunidademedida, doks_meta from produto where inativo = 0 order by nome asc", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia, idfamilia, idunidademedida, doks_meta, produto.preco from produto where inativo = 0 order by nome asc", nativeQuery = true)
 	List<Produto> buscarProdutos();
 
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta from produto where id=?1", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta, produto.preco from produto where id=?1", nativeQuery = true)
 	Produto porId(String id);
 	
-	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta from produto where codigo= ?1", nativeQuery = true)
+	@Query(value = "select id,codigo,ean,nome,inativo,imagem,idhierarquia ,idfamilia, idunidademedida, doks_meta, produto.preco from produto where codigo= ?1", nativeQuery = true)
 	Produto findByCodigo(String codigo);
 	
 	/////////////////////////////////////////ATUALIZA PRECO DA TABELA PRODUTO /////////////////////////////////////////////////
@@ -129,15 +129,15 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	void atualizarMetaFamilia(Integer idfamilia, BigDecimal meta);
 
 	
-	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join hierarquia t1 on (t1.id = produto.idhierarquia) where produto.inativo = '0' and  t1.codigo LIKE CONCAT(?1, '%') " , nativeQuery = true)
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem ,produto.preco from produto left join hierarquia t1 on (t1.id = produto.idhierarquia) where produto.inativo = '0' and  t1.codigo LIKE CONCAT(?1, '%') " , nativeQuery = true)
 	List<Produto> buscarProdutosPorGrupo(String codigo);
 
-	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto where produto.inativo = '0' and produto.idfamilia=?1 " , nativeQuery = true)
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem, produto.preco from produto where produto.inativo = '0' and produto.idfamilia=?1 " , nativeQuery = true)
 	List<Produto> buscarProdutosFamilia(Integer id);
 
-	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto where produto.inativo = '0' and produto.idhierarquia=?1 order by produto.nome asc " , nativeQuery = true)
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem, produto.preco from produto where produto.inativo = '0' and produto.idhierarquia=?1 order by produto.nome asc " , nativeQuery = true)
 	List<Produto> buscarProdutosGrupo(int i);
-	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem from produto left join produtoean on (produto.id=produtoean.idproduto) where produto.inativo = '0' and produto.ean=?1 or produtoean.ean=?1 or produto.codigo =?1  limit 1 " , nativeQuery = true)
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem, produto.preco from produto left join produtoean on (produto.id=produtoean.idproduto) where produto.inativo = '0' and produto.ean=?1 or produtoean.ean=?1 or produto.codigo =?1  limit 1 " , nativeQuery = true)
 	Produto buscarProdutosporEan(String ean);
 
 

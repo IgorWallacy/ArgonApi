@@ -40,8 +40,8 @@ public class Produto {
 	@JoinColumn(name = "idunidademedida", nullable = false)
 	private UnidadeMedida idUnidadeMedida;
 	
-	
-
+	@Column(name="preco")
+	private BigDecimal preco;
 	
 	
 	
@@ -74,6 +74,14 @@ public class Produto {
 
 	public void setIdUnidadeMedida(UnidadeMedida idUnidadeMedida) {
 		this.idUnidadeMedida = idUnidadeMedida;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
 	}
 
 	@Override
