@@ -38,6 +38,12 @@ public class ProdutoResource {
 		return produtos.buscarProdutosFamilia(Integer.parseInt(id));
 	}
 
+	@GetMapping("/familia/multempresa/{id}/{filial}")
+	public List<Produto> getProdutoFamiliaMultEmpresa (@PathVariable String id , @PathVariable String filial) {
+
+		return produtos.buscarProdutosMultEmpresaFamilia(Integer.parseInt(id), Integer.parseInt(filial));
+	}
+
 	@GetMapping("/grupo/{id}")
 	public List<Produto> getProdutoGrupo (@PathVariable String id) {
 

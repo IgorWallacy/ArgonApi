@@ -141,4 +141,6 @@ public interface Produtos extends JpaRepository<Produto, Integer> {
 	Produto buscarProdutosporEan(String ean);
 
 
+	@Query(value = "select produto.id, produto.codigo , produto.ean ,produto.nome , produto.inativo , produto.doks_meta, produto.idunidademedida, produto.imagem, formacaoprecoproduto.preco from produto left join formacaoprecoproduto on (produto.id = formacaoprecoproduto.idproduto) where produto.inativo = '0' and produto.idfamilia=?1 and formacaoprecoproduto.idfilial=?2 " , nativeQuery = true)
+	List<Produto> buscarProdutosMultEmpresaFamilia(int i, int parseInt);
 }
