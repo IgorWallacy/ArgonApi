@@ -13,7 +13,7 @@ import com.doks.conferencia.repository.EntidadeRepository;
 @RestController
 @RequestMapping("/api/entidade")
 public class EntidadeResource {
-	
+
 	@Autowired
 	private EntidadeRepository repository;
 	
